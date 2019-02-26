@@ -27,6 +27,10 @@ npm install graphology-metrics
   - [Degree centrality](#degree-centrality)
 * [Weighted degree](#weighted-degree)
 
+*Attributes metrics*
+
+* [Modalities](#modalities)
+
 ### Density
 
 Computes the density of the given graph.
@@ -306,3 +310,40 @@ To compute the weighted degree of every node:
 * **attributes** *?object*: custom attribute names:
   - **weight** *?string* [`weight`]: name of the weight attribute.
   - **weightedDegree** *?string* [`weightedDegree`]: name of the attribute to assign.
+
+### Modalities
+
+Method returning a node categorical attribute's modalities and related statistics.
+
+```js
+import modalities from 'graphology-metrics/modalities';
+
+// Retrieving the 'type' attribute's modalities
+const info = modalities(graph, 'type');
+>>> {
+  value1: {
+    nodes: 34,
+    internalEdges: 277,
+    internalDensity: 0.03,
+    externalEdges: 45,
+    externalDensity: 0.05,
+    inboundEdges: 67,
+    inboundDensity: 0.07,
+    outboundEdges: 124,
+    outboundDensity: 0.003
+  },
+  ...
+}
+
+// Retrieving modalities info for several attributes at once
+const info = modalities(graph, ['type', 'lang']);
+>>> {
+  type: {...},
+  lang: {...}
+}
+```
+
+*Arguments*
+
+* **graph** *Graph*: target graph.
+* **attribute** *string|array*: target categorical attribute or array of categorical attributes.
