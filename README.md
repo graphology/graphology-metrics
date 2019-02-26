@@ -21,6 +21,7 @@ npm install graphology-metrics
 
 *Node metrics*
 
+* [Degree](#degree)
 * [Centrality](#centrality)
   - [Betweenness centrality](#betweenness-centrality)
   - [Degree centrality](#degree-centrality)
@@ -142,6 +143,61 @@ weightedSize(graph, 'myWeightAttribute');
 
 * **graph** *Graph*: target graph.
 * **weightAttribute** *?string* [`weight`]: name of the weight attribute.
+
+### Degree
+
+NOT IMPLEMENTED YET
+
+Returns degree information for every node in the graph. Note that [`graphology`](https://graphology.github.io)'s API already gives you access to this information through `#.degree` etc. So only consider this function as a convenience to extract/assign all degrees at once.
+
+```js
+import degree from 'graphology-metrics/degree';
+
+import {
+  inDegree,
+  outDegree,
+  undirectedDegree,
+  directedDegree,
+  allDegree
+} from 'graphology-metrics/degree';
+
+// To extract degree information for every node
+const degrees = degree(graph);
+>>> {node1: 34, node2: 45, ...}
+
+// To extract only in degree information for every node
+const inDegrees = inDegree(graph);
+
+// To extract full degree breakdown for every node
+const degrees = allDegree(graph);
+>>> { // Assuming the graph is directed
+  node1: {
+    in: 2,
+    out: 36
+  },
+  ...
+}
+
+// To map degree information to node attributes
+degree.assign(graph);
+graph.getNodeAttribute(node, 'degree');
+>>> 45
+
+// To map only degree & in degree to node attributes
+allDegree.assign(graph, {types: ['degree', 'inDegree']});
+```
+
+*Arguments*
+
+* **graph** *Graph*: target graph.
+* **options** *?object*: options:
+  - **attributes** *?object*: Custom attribute names:
+    + **degree** *?string*: Name of the mixed degree attribute.
+    + **inDegree** *?string*: Name of the mixed inDegree attribute.
+    + **outDegree** *?string*: Name of the mixed outDegree attribute.
+    + **undirectedDegree** *?string*: Name of the mixed undirectedDegree attribute.
+    + **directedDegree** *?string*: Name of the mixed directedDegree attribute.
+  - **types** *?array*: List of degree types to extract.
 
 ### Centrality
 
