@@ -157,7 +157,7 @@ Returns degree information for every node in the graph. Note that [`graphology`]
 ```js
 import degree from 'graphology-metrics/degree';
 
-import {
+import degree, {
   inDegree,
   outDegree,
   undirectedDegree,
@@ -189,6 +189,22 @@ graph.getNodeAttribute(node, 'degree');
 
 // To map only degree & in degree to node attributes
 allDegree.assign(graph, {types: ['degree', 'inDegree']});
+
+// To map only degree & in degree with different names
+allDegree(
+  graph,
+  {
+    attributes: {
+      inDegree: 'in',
+      outDegree: 'out'
+    },
+    types: ['inDegree', 'outDegree']
+  }
+)
+>>> {
+  1: {in: 1, out: 1},
+  ...
+}
 ```
 
 *Arguments*
