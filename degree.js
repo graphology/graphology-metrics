@@ -53,7 +53,7 @@ function allDegree (graph, options, assign) {
   }
   if (options && options.types && options.types.length) {
     types = defaultTypes.filter(function (type) {
-      return options.types.includes(type);
+      return options.types.indexOf(type) > -1;
     });
   }
   else {
