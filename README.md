@@ -150,8 +150,6 @@ weightedSize(graph, 'myWeightAttribute');
 
 ### Degree
 
-NOT IMPLEMENTED YET
-
 Returns degree information for every node in the graph. Note that [`graphology`](https://graphology.github.io)'s API already gives you access to this information through `#.degree` etc. So only consider this function as a convenience to extract/assign all degrees at once.
 
 ```js
