@@ -269,19 +269,52 @@ describe('Degrees', function () {
       );
     });
     it('should calculate all degrees parameters on an undirected graph', function () {
-      var graph = createGraph('undirected');
-      var res = allDegree(graph);
       assert.deepEqual(
-        res,
+        allDegree(createGraph('undirected')),
         {
           1: {
-            degree: 2
+            undirectedDegree: 2
           },
           2: {
-            degree: 2
+            undirectedDegree: 2
           },
           3: {
-            degree: 2
+            undirectedDegree: 2
+          }
+        }
+      );
+    });
+    it('should calculate all degrees parameters on a mixed graph', function () {
+      var graph = new Graph({multi: true, allowSelfLoops: false});
+
+      graph.addNode(1);
+      graph.addNode(2);
+      graph.addNode(3);
+
+      graph.addUndirectedEdge(1, 2);
+      graph.addUndirectedEdge(2, 3);
+      graph.addUndirectedEdge(3, 1);
+
+      graph.addDirectedEdge(1, 3);
+      graph.addDirectedEdge(1, 2);
+
+      assert.deepEqual(
+        allDegree(graph),
+        {
+          1: {
+            inDegree: 0,
+            outDegree: 2,
+            undirectedDegree: 2
+          },
+          2: {
+            inDegree: 1,
+            outDegree: 0,
+            undirectedDegree: 2
+          },
+          3: {
+            inDegree: 1,
+            outDegree: 0,
+            undirectedDegree: 2
           }
         }
       );

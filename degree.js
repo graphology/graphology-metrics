@@ -46,11 +46,15 @@ function allDegree (graph, options, assign) {
   var types;
   var defaultTypes;
   if (graph.type === 'undirected') {
-    defaultTypes = ['degree'];
+    defaultTypes = ['undirectedDegree'];
   }
-  else {
+  if (graph.type === 'mixed') {
+    defaultTypes = ['inDegree', 'outDegree', 'undirectedDegree'];
+  }
+  if (graph.type === 'directed') {
     defaultTypes = ['inDegree', 'outDegree'];
   }
+
   if (options && options.types && options.types.length) {
     types = defaultTypes.filter(function (type) {
       return options.types.indexOf(type) > -1;
