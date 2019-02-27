@@ -176,8 +176,8 @@ const inDegrees = inDegree(graph);
 const degrees = allDegree(graph);
 >>> { // Assuming the graph is directed
   node1: {
-    in: 2,
-    out: 36
+    inDegree: 2,
+    outDegree: 36
   },
   ...
 }
