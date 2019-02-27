@@ -268,7 +268,6 @@ describe('Degrees', function () {
         }
       );
     });
-  
     it('should calculate all degrees parameters on an undirected graph', function () {
       var graph = createGraph('undirected');
       var res = allDegree(graph);
@@ -287,7 +286,6 @@ describe('Degrees', function () {
         }
       );
     });
-  
     it('should be possible to customize attributes indexes', function () {
       assert.deepEqual(
         allDegree(
