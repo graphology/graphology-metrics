@@ -5,7 +5,7 @@
  * Functions used to compute the degree of each node of a given graph.
  */
 var isGraph = require('graphology-utils/is-graph');
-var defaultAttributes = {
+var DEFAULT_ATTRIBUTES = {
   degree: 'degree',
   inDegree: 'inDegree',
   outDegree: 'outDegree',
@@ -21,7 +21,7 @@ function abstractDegree (graph, callee, assign, type, options) {
   }
   var nodes = graph.nodes();
   if (assign) {
-    var attributes = Object.assign({}, defaultAttributes, options && options.attributes);
+    var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
     for (var j = 0; j < nodes.length; j++) {
       graph.setNodeAttribute(
         nodes[j],
@@ -41,7 +41,7 @@ function abstractDegree (graph, callee, assign, type, options) {
 function allDegree (graph, options, assign) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/degree: given graph is not a valid graphology instance.');
-  var attributes = Object.assign({}, defaultAttributes, options && options.attributes);
+  var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
   var nodes = graph.nodes();
   var types;
   var defaultTypes;

@@ -52,8 +52,8 @@ describe('Degrees', function () {
         {1: 2, 2: 2, 3: 2}
       );
     });
-    it('should calculate all degrees in an multi graph.', function() {
-      var graph = new Graph({multi: true, allowSelfLoops: false});
+    it('should calculate all degrees in an multi mixed graph.', function() {
+      var graph = new Graph({multi: true, allowSelfLoops: true});
 
       graph.addNode(1);
       graph.addNode(2);
@@ -68,6 +68,14 @@ describe('Degrees', function () {
       assert.deepEqual(
         degree(graph),
         {1: 4, 2: 3, 3: 3}
+      );
+
+      graph.addDirectedEdge(1, 3);
+      graph.addDirectedEdge(2, 2);
+
+      assert.deepEqual(
+        degree(graph),
+        {1: 5, 2: 5, 3: 4}
       );
     });
     it('should assign all degrees to their nodes', function () {
@@ -284,8 +292,8 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should calculate all degrees parameters on a mixed graph', function () {
-      var graph = new Graph({multi: true, allowSelfLoops: false});
+    it('should calculate all degrees parameters on a mixed multi graph', function () {
+      var graph = new Graph({multi: true, allowSelfLoops: true});
 
       graph.addNode(1);
       graph.addNode(2);
@@ -314,6 +322,30 @@ describe('Degrees', function () {
           3: {
             inDegree: 1,
             outDegree: 0,
+            undirectedDegree: 2
+          }
+        }
+      );
+
+      graph.addDirectedEdge(1, 3);
+      graph.addDirectedEdge(3, 3);
+
+      assert.deepEqual(
+        allDegree(graph),
+        {
+          1: {
+            inDegree: 0,
+            outDegree: 3,
+            undirectedDegree: 2
+          },
+          2: {
+            inDegree: 1,
+            outDegree: 0,
+            undirectedDegree: 2
+          },
+          3: {
+            inDegree: 3,
+            outDegree: 1,
             undirectedDegree: 2
           }
         }
