@@ -37,30 +37,34 @@ describe('Degrees', function () {
   describe('degree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
-        degree(null);
+        degree({});
       }, /instance/);
     });
     it('should calculate all degrees in a directed graph.', function() {
-      var graph = createGraph('directed');
-      assert.deepEqual(degree(graph), {1: 2, 2: 3, 3: 3});
+      assert.deepEqual(
+        degree(createGraph('directed')),
+        {1: 2, 2: 3, 3: 3}
+      );
     });
     it('should calculate all degrees in an undirected graph.', function() {
-      var graph = createGraph('undirected');
-      assert.deepEqual(degree(graph), {1: 2, 2: 2, 3: 2});
+      assert.deepEqual(
+        degree(createGraph('undirected')),
+        {1: 2, 2: 2, 3: 2}
+      );
     });
     it('should calculate all degrees in an multi graph.', function() {
       var graph = new Graph({multi: true, allowSelfLoops: false});
-  
+
       graph.addNode(1);
       graph.addNode(2);
       graph.addNode(3);
-  
+
       graph.addUndirectedEdge(1, 2);
       graph.addUndirectedEdge(2, 3);
       graph.addUndirectedEdge(3, 1);
       graph.addDirectedEdge(1, 3);
       graph.addDirectedEdge(1, 2);
-  
+
       assert.deepEqual(
         degree(graph),
         {1: 4, 2: 3, 3: 3}
@@ -87,16 +91,15 @@ describe('Degrees', function () {
       );
     });
   });
-  
   describe('inDegree', function () {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
-        inDegree(null);
+        inDegree({});
       }, /instance/);
     });
     it('should thow an error if given Graph is undirected', function () {
       assert.throws(function () {
-        inDegree(new Graph({type: 'undirected'}));
+        inDegree(createGraph('undirected'));
       }, /undirected/);
     });
     it('should calculate all inDegrees', function () {
@@ -129,12 +132,12 @@ describe('Degrees', function () {
   describe('outDegree', function () {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
-        outDegree(null);
+        outDegree({});
       }, /instance/);
     });
     it('should thow an error if given Graph is undirected', function () {
       assert.throws(function () {
-        outDegree(new Graph({type: 'undirected'}));
+        outDegree(createGraph('undirected'));
       }, /undirected/);
     });
     it('should calculate all outDegrees', function () {
@@ -167,7 +170,7 @@ describe('Degrees', function () {
   describe('undirectedDegree', function () {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
-        undirectedDegree(null);
+        undirectedDegree({});
       }, /instance/);
     });
     it('should thow an error if given Graph is directed', function () {
@@ -243,7 +246,7 @@ describe('Degrees', function () {
   describe('allDegree', function () {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
-        allDegree(null);
+        allDegree({});
       }, /instance/);
     });
     it('should calculate all degrees parameters on a directed graph', function () {
