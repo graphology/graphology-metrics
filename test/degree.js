@@ -15,9 +15,9 @@ var allDegree = degree.allDegree;
 function createGraph (type) {
   var graph = new Graph({type: type});
 
-  graph.addNode('1', {});
-  graph.addNode('2', {});
-  graph.addNode('3', {});
+  graph.addNode('1');
+  graph.addNode('2');
+  graph.addNode('3');
 
   if (type === 'directed') {
     graph.addDirectedEdge(1, 2);
