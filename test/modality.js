@@ -50,7 +50,6 @@ describe('Modalities', function () {
       );
     }
     var res = modalities(rioGraph, 'Category');
-    console.log(res);
 
     assert.equal(
       res.Category['Green-economy'].nodes,
@@ -170,6 +169,67 @@ describe('Modalities', function () {
             internalDensity: 0,
             externalEdges: 3,
             externalDensity: 0
+          }
+        }
+      }
+    );
+  });
+  it('should calculate modalities on an mixed graph', function () {
+    var graph = new Graph({
+      type: 'mixed',
+      multi: true
+    });
+
+    graph.addNode('1', {
+      foo: 'bar',
+      cava: 'ui'
+    });
+    graph.addNode('2', {
+      foo: 'boo',
+      cava: 'ui'
+    });
+    graph.addNode('3', {
+      foo: 'bar',
+      cava: 'non'
+    });
+
+    graph.addUndirectedEdge(1, 2);
+    graph.addUndirectedEdge(2, 3);
+    graph.addUndirectedEdge(3, 2);
+    graph.addUndirectedEdge(3, 1);
+
+    graph.addDirectedEdge(1, 2); // bar -> boo
+    graph.addDirectedEdge(2, 3); // boo -> bar
+    graph.addDirectedEdge(3, 2); // bar -> boo
+    graph.addDirectedEdge(3, 1); // bar -> bar
+
+    var mapModalities = modalities(graph, ['foo']);
+
+    assert.deepEqual(
+      mapModalities,
+      {
+        foo: {
+          bar: {
+            nodes: 2,
+            internalEdges: 2,
+            internalDensity: 2 / 3,
+            externalEdges: 6,
+            externalDensity: 0,
+            inboundEdges: 4,
+            inboundDensity: 0,
+            outboundEdges: 5,
+            outboundDensity: 0
+          },
+          boo: {
+            nodes: 1,
+            internalEdges: 0,
+            internalDensity: 0,
+            externalEdges: 6,
+            externalDensity: 0,
+            inboundEdges: 5,
+            inboundDensity: 0,
+            outboundEdges: 4,
+            outboundDensity: 0
           }
         }
       }

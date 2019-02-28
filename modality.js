@@ -78,7 +78,8 @@ function modalities (graph, attributes) {
     acc[curr] = {};
     return acc;
   }, {});
-  graph.forEachEdge(function (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
+
+  function directedGraphModalities (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
     for (var i = 0; i < attributes.length; i++) {
       var attribute = attributes[i];
       var mapForAttribute = hashmap[attribute];
@@ -101,15 +102,68 @@ function modalities (graph, attributes) {
         mapForSourceValue.internalEdges++;
       }
       else {
-        if (!isUndirected) {
+        mapForSourceValue.outboundEdges++;
+        mapForTargetValue.inboundEdges++;
+
+        mapForSourceValue.externalEdges++;
+        mapForTargetValue.externalEdges++;
+      }
+    }
+  }
+
+  function undirectedGraphModalities (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
+    for (var i = 0; i < attributes.length; i++) {
+      var attribute = attributes[i];
+      var mapForAttribute = hashmap[attribute];
+      var sourceValue = sourceAttributes[attribute];
+      var targetValue = targetAttributes[attribute];
+      var mapForSourceValue = mapForAttribute[sourceValue];
+      if (!(attribute in sourceAttributes) || !(attribute in targetAttributes)) {
+        return;
+      }
+      if (!mapForSourceValue) {
+        mapForSourceValue = createEmptyModularity(isUndirected);
+        mapForAttribute[sourceValue] = mapForSourceValue;
+      }
+      var mapForTargetValue = mapForAttribute[targetValue];
+      if (!mapForTargetValue) {
+        mapForTargetValue = createEmptyModularity(isUndirected);
+        mapForAttribute[targetValue] = mapForTargetValue;
+      }
+      if (sourceValue === targetValue) {
+        mapForSourceValue.internalEdges++;
+      }
+      else {
+        if (type === 'mixed') {
           mapForSourceValue.outboundEdges++;
+          mapForSourceValue.inboundEdges++;
+          mapForTargetValue.outboundEdges++;
           mapForTargetValue.inboundEdges++;
         }
         mapForSourceValue.externalEdges++;
         mapForTargetValue.externalEdges++;
       }
     }
-  });
+  }
+
+  var densityFn;
+  if (type === 'directed') {
+    graph.forEachEdge(
+      directedGraphModalities
+    );
+    densityFn = density.directedDensity;
+  }
+  else if (type === 'undirected') {
+    graph.forEachEdge(
+      undirectedGraphModalities
+    );
+    densityFn = density.undirectedDensity;
+  }
+  else {
+    graph.forEachDirectedEdge(directedGraphModalities);
+    graph.forEachUndirectedEdge(undirectedGraphModalities);
+    densityFn = density.mixedDensity;
+  }
 
   graph.forEachNode(function (node, nodeAttributes) {
     for (var i = 0; i < attributes.length; i++) {
@@ -117,16 +171,6 @@ function modalities (graph, attributes) {
     }
   });
 
-  var densityFn;
-  if (graph.type === 'directed') {
-    densityFn = density.directedDensity;
-  }
-  else if (graph.type === 'undirected') {
-    densityFn = density.undirectedDensity;
-  }
-  else {
-    densityFn = density.mixedDensity;
-  }
   // Checks if all provided attributes has been computed.
   for (var attribute in hashmap) {
     if (isEmpty(hashmap[attribute])) {
