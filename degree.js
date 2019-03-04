@@ -20,19 +20,20 @@ function abstractDegree (graph, callee, assign, type, options) {
     throw new Error('graphology-metrics/' + callee + ': can not be calculated for ' + type + '  graphs.');
   }
   var nodes = graph.nodes();
+  var i = 0;
   if (assign) {
     var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
-    for (var j = 0; j < nodes.length; j++) {
+    for (i = 0; i < nodes.length; i++) {
       graph.setNodeAttribute(
-        nodes[j],
+        nodes[i],
         attributes[callee],
-        graph[callee](nodes[j])
+        graph[callee](nodes[i])
       );
     }
     return;
   }
   var hashmap = {};
-  for (var i = 0; i < nodes.length; i++) {
+  for (i = 0; i < nodes.length; i++) {
     hashmap[nodes[i]] = graph[callee](nodes[i]);
   }
   return hashmap;
@@ -63,22 +64,24 @@ function allDegree (graph, options, assign) {
   else {
     types = defaultTypes;
   }
+  var i = 0;
+  var j = 0;
   if (assign) {
-    for (var k = 0; k < nodes.length; k++) {
-      for (var l = 0; l < types.length; l++) {
+    for (i = 0; i < nodes.length; i++) {
+      for (j = 0; j < types.length; j++) {
         graph.setNodeAttribute(
-          nodes[k],
-          attributes[types[l]],
-          graph[types[l]](nodes[k])
+          nodes[i],
+          attributes[types[j]],
+          graph[types[j]](nodes[i])
         );
       }
     }
   }
   else {
     var hashmap = {};
-    for (var i = 0; i < nodes.length; i++) {
+    for (i = 0; i < nodes.length; i++) {
       var response = {};
-      for (var j = 0; j < types.length; j++) {
+      for (j = 0; j < types.length; j++) {
         response[attributes[types[j]]] = graph[types[j]](nodes[i]);
       }
       hashmap[nodes[i]] = response;
@@ -130,5 +133,6 @@ degree.outDegree = outDegree;
 degree.undirectedDegree = undirectedDegree;
 degree.directedDegree = directedDegree;
 degree.allDegree = allDegree;
+degree.abstractDegree = abstractDegree;
 
 module.exports = degree;
