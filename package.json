@@ -42,7 +42,6 @@
   "homepage": "https://github.com/graphology/graphology-metrics#readme",
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
-    "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "eslint": "^4.18.2",
     "graphology": "^0.13.1",
