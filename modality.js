@@ -58,102 +58,96 @@ function modalities (graph, attributes) {
     throw new Error('graphology-metrics/modality: no attributes where given.');
   }
   if (!isArray(attributes)) {
+    if (typeof(attributes) !== 'string') {
+      throw new Error('graphology-metrics/modality: Attributes must be a string or an array of strings. typeof attributes = ' + typeof(attributes));
+    }
     attributes = [attributes];
   }
-  var type = graph.type;
-  var hashmap = attributes.reduce(function (acc, curr) {
-    acc[curr] = {};
-    return acc;
-  }, {});
+  var hashmap = {};
+  var i = 0;
 
-  function directedGraphModalities (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
-    for (var i = 0; i < attributes.length; i++) {
-      var attribute = attributes[i];
-      var mapForAttribute = hashmap[attribute];
-      var sourceValue = sourceAttributes[attribute];
-      var targetValue = targetAttributes[attribute];
-      var mapForSourceValue = mapForAttribute[sourceValue];
-      if (!(attribute in sourceAttributes) || !(attribute in targetAttributes)) {
-        return;
-      }
-      if (!mapForSourceValue) {
-        mapForSourceValue = createEmptyModularity();
-        mapForAttribute[sourceValue] = mapForSourceValue;
-      }
-      var mapForTargetValue = mapForAttribute[targetValue];
-      if (!mapForTargetValue) {
-        mapForTargetValue = createEmptyModularity();
-        mapForAttribute[targetValue] = mapForTargetValue;
-      }
-      if (sourceValue === targetValue) {
-        mapForSourceValue.internalEdges++;
-      }
-      else {
-        mapForSourceValue.outboundEdges++;
-        mapForTargetValue.inboundEdges++;
-
-        mapForSourceValue.externalEdges++;
-        mapForTargetValue.externalEdges++;
-      }
-    }
+  // Build hashmap's accepted attributes
+  for (i = 0; i < attributes.length; i++) {
+    hashmap[attributes[i]] = {};
   }
 
-  function undirectedGraphModalities (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
-    for (var i = 0; i < attributes.length; i++) {
-      var attribute = attributes[i];
-      var mapForAttribute = hashmap[attribute];
-      var sourceValue = sourceAttributes[attribute];
-      var targetValue = targetAttributes[attribute];
-      var mapForSourceValue = mapForAttribute[sourceValue];
-      if (!(attribute in sourceAttributes) || !(attribute in targetAttributes)) {
-        return;
-      }
-      if (!mapForSourceValue) {
-        mapForSourceValue = createEmptyModularity();
-        mapForAttribute[sourceValue] = mapForSourceValue;
-      }
-      var mapForTargetValue = mapForAttribute[targetValue];
-      if (!mapForTargetValue) {
-        mapForTargetValue = createEmptyModularity();
-        mapForAttribute[targetValue] = mapForTargetValue;
-      }
-      if (sourceValue === targetValue) {
-        mapForSourceValue.internalEdges++;
-      }
-      else {
-        if (type === 'mixed') {
-          mapForSourceValue.outboundEdges++;
-          mapForSourceValue.inboundEdges++;
-          mapForTargetValue.outboundEdges++;
-          mapForTargetValue.inboundEdges++;
+  function modalitiesCreator (type) {
+    return function (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
+      for (i = 0; i < attributes.length; i++) {
+        var attribute = attributes[i];
+        var mapForAttribute = hashmap[attribute];
+        var sourceValue = sourceAttributes[attribute];
+        var targetValue = targetAttributes[attribute];
+        var mapForSourceValue = mapForAttribute[sourceValue];
+        if (!(attribute in sourceAttributes) || !(attribute in targetAttributes)) {
+          return;
         }
-        mapForSourceValue.externalEdges++;
-        mapForTargetValue.externalEdges++;
+        if (!mapForSourceValue) {
+          mapForSourceValue = createEmptyModularity();
+          mapForAttribute[sourceValue] = mapForSourceValue;
+        }
+        var mapForTargetValue = mapForAttribute[targetValue];
+        if (!mapForTargetValue) {
+          mapForTargetValue = createEmptyModularity();
+          mapForAttribute[targetValue] = mapForTargetValue;
+        }
+        if (sourceValue === targetValue) {
+          mapForSourceValue.internalEdges++;
+        }
+        else {
+          if (type === 'directed') {
+            mapForSourceValue.outboundEdges++;
+            mapForTargetValue.inboundEdges++;
+
+            mapForSourceValue.externalEdges++;
+            mapForTargetValue.externalEdges++;
+          }
+          else if (type === 'undirected' || type === 'mixed') {
+            mapForSourceValue.externalEdges++;
+            mapForTargetValue.externalEdges++;
+            if (type === 'mixed') {
+              mapForSourceValue.outboundEdges++;
+              mapForSourceValue.inboundEdges++;
+              mapForTargetValue.outboundEdges++;
+              mapForTargetValue.inboundEdges++;
+            }
+          }
+          else {
+            mapForSourceValue.outboundEdges++;
+            mapForSourceValue.inboundEdges++;
+            mapForTargetValue.outboundEdges++;
+            mapForTargetValue.inboundEdges++;
+          }
+        }
       }
-    }
+    };
   }
 
   var densityFn;
-  if (type === 'directed') {
+  if (graph.type === 'directed') {
     graph.forEachEdge(
-      directedGraphModalities
+      modalitiesCreator(graph.type)
     );
     densityFn = density.directedDensity;
   }
-  else if (type === 'undirected') {
+  else if (graph.type === 'undirected') {
     graph.forEachEdge(
-      undirectedGraphModalities
+      modalitiesCreator(graph.type)
     );
     densityFn = density.undirectedDensity;
   }
   else {
-    graph.forEachDirectedEdge(directedGraphModalities);
-    graph.forEachUndirectedEdge(undirectedGraphModalities);
+    graph.forEachDirectedEdge(
+      modalitiesCreator('directed')
+    );
+    graph.forEachUndirectedEdge(
+      modalitiesCreator('mixed')
+    );
     densityFn = density.mixedDensity;
   }
 
   graph.forEachNode(function (node, nodeAttributes) {
-    for (var i = 0; i < attributes.length; i++) {
+    for (i = 0; i < attributes.length; i++) {
       hashmap[attributes[i]][nodeAttributes[attributes[i]]].nodes++;
     }
   });

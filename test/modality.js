@@ -17,6 +17,9 @@ describe('Modalities', function () {
       modalities(new Graph(), '');
     }, /no attributes/);
     assert.throws(function() {
+      modalities(new Graph(), true);
+    }, /typeof/);
+    assert.throws(function() {
       modalities(new Graph(), []);
     }, /no attributes/);
     assert.throws(function() {
