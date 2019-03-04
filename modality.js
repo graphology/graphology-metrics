@@ -40,26 +40,14 @@ function isEmpty (obj) {
   return true;
 }
 
-function createEmptyModularity (isUndirected) {
-  if (isUndirected) {
-    return {
-      nodes: 0,
-      internalEdges: 0,
-      internalDensity: 0,
-      externalEdges: 0,
-      externalDensity: 0
-    };
-  }
+function createEmptyModularity () {
   return {
     nodes: 0,
     internalEdges: 0,
-    internalDensity: 0,
+    density: 0,
     externalEdges: 0,
-    externalDensity: 0,
     inboundEdges: 0,
-    inboundDensity: 0,
     outboundEdges: 0,
-    outboundDensity: 0
   };
 }
 
@@ -73,7 +61,6 @@ function modalities (graph, attributes) {
     attributes = [attributes];
   }
   var type = graph.type;
-  var isUndirected = type === 'undirected';
   var hashmap = attributes.reduce(function (acc, curr) {
     acc[curr] = {};
     return acc;
@@ -90,12 +77,12 @@ function modalities (graph, attributes) {
         return;
       }
       if (!mapForSourceValue) {
-        mapForSourceValue = createEmptyModularity(isUndirected);
+        mapForSourceValue = createEmptyModularity();
         mapForAttribute[sourceValue] = mapForSourceValue;
       }
       var mapForTargetValue = mapForAttribute[targetValue];
       if (!mapForTargetValue) {
-        mapForTargetValue = createEmptyModularity(isUndirected);
+        mapForTargetValue = createEmptyModularity();
         mapForAttribute[targetValue] = mapForTargetValue;
       }
       if (sourceValue === targetValue) {
@@ -122,12 +109,12 @@ function modalities (graph, attributes) {
         return;
       }
       if (!mapForSourceValue) {
-        mapForSourceValue = createEmptyModularity(isUndirected);
+        mapForSourceValue = createEmptyModularity();
         mapForAttribute[sourceValue] = mapForSourceValue;
       }
       var mapForTargetValue = mapForAttribute[targetValue];
       if (!mapForTargetValue) {
-        mapForTargetValue = createEmptyModularity(isUndirected);
+        mapForTargetValue = createEmptyModularity();
         mapForAttribute[targetValue] = mapForTargetValue;
       }
       if (sourceValue === targetValue) {
@@ -179,7 +166,7 @@ function modalities (graph, attributes) {
     var valuesForAttribute = hashmap[attribute];
     for (var value in valuesForAttribute) {
       var valueModalities = valuesForAttribute[value];
-      valueModalities.internalDensity = densityFn(
+      valueModalities.density = densityFn(
         valueModalities.nodes,
         valueModalities.internalEdges
       );

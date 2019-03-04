@@ -103,24 +103,18 @@ describe('Modalities', function () {
           bar: {
             nodes: 2,
             internalEdges: 1,
-            internalDensity: 0.5,
+            density: 0.5,
             externalEdges: 3,
-            externalDensity: 0,
             inboundEdges: 1,
-            inboundDensity: 0,
             outboundEdges: 2,
-            outboundDensity: 0
           },
           boo: {
             nodes: 1,
             internalEdges: 0,
-            internalDensity: 0,
+            density: 0,
             externalEdges: 3,
-            externalDensity: 0,
             inboundEdges: 2,
-            inboundDensity: 0,
             outboundEdges: 1,
-            outboundDensity: 0
           }
         }
       }
@@ -159,16 +153,18 @@ describe('Modalities', function () {
           bar: {
             nodes: 2,
             internalEdges: 1,
-            internalDensity: 1,
+            density: 1,
             externalEdges: 3,
-            externalDensity: 0
+            inboundEdges: 0,
+            outboundEdges: 0
           },
           boo: {
             nodes: 1,
             internalEdges: 0,
-            internalDensity: 0,
+            density: 0,
             externalEdges: 3,
-            externalDensity: 0
+            inboundEdges: 0,
+            outboundEdges: 0
           }
         }
       }
@@ -212,24 +208,18 @@ describe('Modalities', function () {
           bar: {
             nodes: 2,
             internalEdges: 2,
-            internalDensity: 2 / 3,
+            density: 2 / 3,
             externalEdges: 6,
-            externalDensity: 0,
             inboundEdges: 4,
-            inboundDensity: 0,
             outboundEdges: 5,
-            outboundDensity: 0
           },
           boo: {
             nodes: 1,
             internalEdges: 0,
-            internalDensity: 0,
+            density: 0,
             externalEdges: 6,
-            externalDensity: 0,
             inboundEdges: 5,
-            inboundDensity: 0,
             outboundEdges: 4,
-            outboundDensity: 0
           }
         }
       }
