@@ -79,6 +79,7 @@ function modalities(graph, attributes) {
         var sourceValue = sourceAttributes[attribute];
         var targetValue = targetAttributes[attribute];
         var mapForSourceValue = mapForAttribute[sourceValue];
+        // If attribute is not in source or target attributes we can exit the iteration.
         if (!(attribute in sourceAttributes) || !(attribute in targetAttributes)) {
           return;
         }
@@ -96,13 +97,18 @@ function modalities(graph, attributes) {
         }
         else {
           if (type === 'directed') {
+            // Directed graphs only have in/out edges
             mapForSourceValue.outboundEdges++;
             mapForTargetValue.inboundEdges++;
 
+            // externalEdges are all the edges going in OR out of a category.
+            // So any link where source !== target.
             mapForSourceValue.externalEdges++;
             mapForTargetValue.externalEdges++;
           }
           else {
+            // externalEdges are all the edges going in OR out of a category.
+            // So any link where source !== target.
             mapForSourceValue.externalEdges++;
             mapForTargetValue.externalEdges++;
             if (type === 'mixed') {
@@ -135,7 +141,7 @@ function modalities(graph, attributes) {
       modalitiesCreator('directed')
     );
     graph.forEachUndirectedEdge(
-      modalitiesCreator('mixed')
+      modalitiesCreator(graph.type)
     );
     densityFn = density.mixedDensity;
   }
