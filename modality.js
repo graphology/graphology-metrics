@@ -7,11 +7,11 @@
 var isGraph = require('graphology-utils/is-graph');
 var density = require('./density');
 
-function isArray (array) {
+function isArray(array) {
   return Object.prototype.toString.call(array) === '[object Array]';
 }
 
-function isEmpty (obj) {
+function isEmpty(obj) {
 
   // null and undefined are "empty"
   if (!obj)
@@ -40,7 +40,7 @@ function isEmpty (obj) {
   return true;
 }
 
-function createEmptyModularity () {
+function createEmptyModularity() {
   return {
     nodes: 0,
     internalEdges: 0,
@@ -51,7 +51,7 @@ function createEmptyModularity () {
   };
 }
 
-function modalities (graph, attributes) {
+function modalities(graph, attributes) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/modality: given graph is not a valid graphology instance.');
   if (!attributes || (attributes && attributes.length === 0)) {
@@ -71,8 +71,8 @@ function modalities (graph, attributes) {
     hashmap[attributes[i]] = {};
   }
 
-  function modalitiesCreator (type) {
-    return function (key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
+  function modalitiesCreator(type) {
+    return function(key, edgeAttributes, source, target, sourceAttributes, targetAttributes) {
       for (i = 0; i < attributes.length; i++) {
         var attribute = attributes[i];
         var mapForAttribute = hashmap[attribute];
@@ -146,7 +146,7 @@ function modalities (graph, attributes) {
     densityFn = density.mixedDensity;
   }
 
-  graph.forEachNode(function (node, nodeAttributes) {
+  graph.forEachNode(function(node, nodeAttributes) {
     for (i = 0; i < attributes.length; i++) {
       hashmap[attributes[i]][nodeAttributes[attributes[i]]].nodes++;
     }

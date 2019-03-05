@@ -5,8 +5,8 @@ var assert = require('chai').assert,
   rioBundle = require('./datasets/rio-bundle.json'),
   modalities = require('../modality.js');
 
-describe('Modalities', function () {
-  it('should throw if given wrong arguments', function () {
+describe('Modalities', function() {
+  it('should throw if given wrong arguments', function() {
     assert.throws(function() {
       modalities({}, []);
     }, /instance/);
@@ -26,7 +26,7 @@ describe('Modalities', function () {
       modalities(new Graph(), ['nonExistingAttribute']);
     }, /any node attributes./);
   });
-  it('should work on a bigger graph', function () {
+  it('should work on a bigger graph', function() {
     var rioGraph = new Graph({
       type: 'directed'
     });
@@ -75,7 +75,7 @@ describe('Modalities', function () {
       rioBundle.nodeAttributes[4].data.modalitiesIndex['Green-economy'].outboundEdges
     );
   });
-  it('should calculate internal edges of a directed graph', function () {
+  it('should calculate internal edges of a directed graph', function() {
     var graph = new Graph({
       type: 'directed'
     });
@@ -123,7 +123,7 @@ describe('Modalities', function () {
       }
     );
   });
-  it('should calculate modalities on an undirected graph', function () {
+  it('should calculate modalities on an undirected graph', function() {
     var graph = new Graph({
       type: 'undirected',
       multi: true
@@ -173,7 +173,7 @@ describe('Modalities', function () {
       }
     );
   });
-  it('should calculate modalities on an mixed graph', function () {
+  it('should calculate modalities on an mixed graph', function() {
     var graph = new Graph({
       type: 'mixed',
       multi: true
