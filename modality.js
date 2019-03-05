@@ -7,10 +7,6 @@
 var isGraph = require('graphology-utils/is-graph');
 var density = require('./density');
 
-function isArray(array) {
-  return Object.prototype.toString.call(array) === '[object Array]';
-}
-
 function isEmpty(obj) {
 
   // null and undefined are "empty"
@@ -40,7 +36,7 @@ function isEmpty(obj) {
   return true;
 }
 
-function createEmptyModularity() {
+function createEmptyModalities() {
   return {
     nodes: 0,
     internalEdges: 0,
@@ -57,7 +53,7 @@ function modalities(graph, attributes) {
   if (!attributes || (attributes && attributes.length === 0)) {
     throw new Error('graphology-metrics/modality: no attributes where given.');
   }
-  if (!isArray(attributes)) {
+  if (!Array.isArray(attributes)) {
     if (typeof(attributes) !== 'string') {
       throw new Error('graphology-metrics/modality: Attributes must be a string or an array of strings. typeof attributes = ' + typeof(attributes));
     }
@@ -84,12 +80,12 @@ function modalities(graph, attributes) {
           return;
         }
         if (!mapForSourceValue) {
-          mapForSourceValue = createEmptyModularity();
+          mapForSourceValue = createEmptyModalities();
           mapForAttribute[sourceValue] = mapForSourceValue;
         }
         var mapForTargetValue = mapForAttribute[targetValue];
         if (!mapForTargetValue) {
-          mapForTargetValue = createEmptyModularity();
+          mapForTargetValue = createEmptyModalities();
           mapForAttribute[targetValue] = mapForTargetValue;
         }
         if (sourceValue === targetValue) {
