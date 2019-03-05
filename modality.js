@@ -102,7 +102,7 @@ function modalities(graph, attributes) {
             mapForSourceValue.externalEdges++;
             mapForTargetValue.externalEdges++;
           }
-          else if (type === 'undirected' || type === 'mixed') {
+          else {
             mapForSourceValue.externalEdges++;
             mapForTargetValue.externalEdges++;
             if (type === 'mixed') {
@@ -111,12 +111,6 @@ function modalities(graph, attributes) {
               mapForTargetValue.outboundEdges++;
               mapForTargetValue.inboundEdges++;
             }
-          }
-          else {
-            mapForSourceValue.outboundEdges++;
-            mapForSourceValue.inboundEdges++;
-            mapForTargetValue.outboundEdges++;
-            mapForTargetValue.inboundEdges++;
           }
         }
       }
