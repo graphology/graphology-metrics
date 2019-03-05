@@ -13,7 +13,7 @@ var DEFAULT_ATTRIBUTES = {
   directedDegree: 'directedDegree'
 };
 
-function abstractDegree (graph, callee, assign, type, options) {
+function abstractDegree(graph, callee, assign, type, options) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/' + callee + ': given graph is not a valid graphology instance.');
   if (graph.type === type) {
@@ -39,7 +39,7 @@ function abstractDegree (graph, callee, assign, type, options) {
   return hashmap;
 }
 
-function allDegree (graph, options, assign) {
+function allDegree(graph, options, assign) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/degree: given graph is not a valid graphology instance.');
   var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
@@ -57,7 +57,7 @@ function allDegree (graph, options, assign) {
   }
 
   if (options && options.types && options.types.length) {
-    types = defaultTypes.filter(function (type) {
+    types = defaultTypes.filter(function(type) {
       return options.types.indexOf(type) > -1;
     });
   }
@@ -89,42 +89,42 @@ function allDegree (graph, options, assign) {
     return hashmap;
   }
 }
-allDegree.assign = function assignAllDegree (graph, options) {
+allDegree.assign = function assignAllDegree(graph, options) {
   allDegree(graph, options, true);
 };
 
-function degree (graph) {
+function degree(graph) {
   return abstractDegree(graph, 'degree');
 }
-degree.assign = function assignDegree (graph, options) {
+degree.assign = function assignDegree(graph, options) {
   abstractDegree(graph, 'degree', true, 'none', options);
 };
 
-function inDegree (graph) {
+function inDegree(graph) {
   return abstractDegree(graph, 'inDegree', false, 'undirected');
 }
-inDegree.assign = function assignInDegree (graph, options) {
+inDegree.assign = function assignInDegree(graph, options) {
   abstractDegree(graph, 'inDegree', true, 'undirected', options);
 };
 
-function outDegree (graph) {
+function outDegree(graph) {
   return abstractDegree(graph, 'outDegree', false, 'undirected');
 }
-outDegree.assign = function assignOutDegree (graph, option) {
+outDegree.assign = function assignOutDegree(graph, option) {
   abstractDegree(graph, 'outDegree', true, 'undirected', option);
 };
 
-function undirectedDegree (graph) {
+function undirectedDegree(graph) {
   return abstractDegree(graph, 'undirectedDegree', false, 'directed');
 }
-undirectedDegree.assign = function assignUndirectedDegree (graph, option) {
+undirectedDegree.assign = function assignUndirectedDegree(graph, option) {
   abstractDegree(graph, 'undirectedDegree', true, 'directed', option);
 };
 
-function directedDegree (graph) {
+function directedDegree(graph) {
   return abstractDegree(graph, 'directedDegree', false, 'undirected');
 }
-directedDegree.assign = function assignUndirectedDegree (graph, option) {
+directedDegree.assign = function assignUndirectedDegree(graph, option) {
   abstractDegree(graph, 'directedDegree', true, 'undirected', option);
 };
 
