@@ -150,14 +150,12 @@ weightedSize(graph, 'myWeightAttribute');
 
 ### Degree
 
-NOT IMPLEMENTED YET
-
 Returns degree information for every node in the graph. Note that [`graphology`](https://graphology.github.io)'s API already gives you access to this information through `#.degree` etc. So only consider this function as a convenience to extract/assign all degrees at once.
 
 ```js
 import degree from 'graphology-metrics/degree';
 
-import {
+import degree, {
   inDegree,
   outDegree,
   undirectedDegree,
@@ -176,8 +174,8 @@ const inDegrees = inDegree(graph);
 const degrees = allDegree(graph);
 >>> { // Assuming the graph is directed
   node1: {
-    in: 2,
-    out: 36
+    inDegree: 2,
+    outDegree: 36
   },
   ...
 }
@@ -189,6 +187,22 @@ graph.getNodeAttribute(node, 'degree');
 
 // To map only degree & in degree to node attributes
 allDegree.assign(graph, {types: ['degree', 'inDegree']});
+
+// To map only degree & in degree with different names
+allDegree(
+  graph,
+  {
+    attributes: {
+      inDegree: 'in',
+      outDegree: 'out'
+    },
+    types: ['inDegree', 'outDegree']
+  }
+)
+>>> {
+  1: {in: 1, out: 1},
+  ...
+}
 ```
 
 *Arguments*
