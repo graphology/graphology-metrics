@@ -1,8 +1,8 @@
 /**
- * Graphology Degree
+ * Graphology Modalities
  * ===================
  *
- * Functions used to compute the degree of each node of a given graph.
+ * Functions used to compute the modalities of each category of a given graph.
  */
 var isGraph = require('graphology-utils/is-graph');
 var density = require('./density');
