@@ -68,13 +68,12 @@ function abstractWeightedDegree(name, assign, edgeGetter, graph, options) {
 
   var edges,
       d,
-      W,
       w,
       i,
       l;
 
   // Computing weighted degree for a single node
-  if (singleNode) {
+  if (singleNode) {
     edges = graph[edgeGetter](singleNode);
     d = 0;
 
@@ -85,7 +84,7 @@ function abstractWeightedDegree(name, assign, edgeGetter, graph, options) {
         d += w;
     }
 
-    if (assign) {
+    if (assign) {
       graph.setNodeAttribute(singleNode, weightedDegreeAttribute, d);
       return;
     }

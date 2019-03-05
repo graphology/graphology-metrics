@@ -1,5 +1,5 @@
 /**
- * Graphology Density Unit Tests
+ * Graphology Degree Unit Tests
  * ==============================
  */
 var assert = require('chai').assert,
@@ -12,7 +12,7 @@ var undirectedDegree = degree.undirectedDegree;
 var directedDegree = degree.directedDegree;
 var allDegree = degree.allDegree;
 
-function createGraph (type) {
+function createGraph(type) {
   var graph = new Graph({type: type});
 
   graph.addNode('1');
@@ -33,7 +33,7 @@ function createGraph (type) {
 
   return graph;
 }
-describe('Degrees', function () {
+describe('Degrees', function() {
   describe('degree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
@@ -78,7 +78,7 @@ describe('Degrees', function () {
         {1: 5, 2: 5, 3: 4}
       );
     });
-    it('should assign all degrees to their nodes', function () {
+    it('should assign all degrees to their nodes', function() {
       var graph = createGraph('directed');
       degree.assign(graph);
       assert.equal(
@@ -86,7 +86,7 @@ describe('Degrees', function () {
         2
       );
     });
-    it('should assign all degrees to their nodes with custom name', function () {
+    it('should assign all degrees to their nodes with custom name', function() {
       var graph = createGraph('directed');
       degree.assign(graph, {
         attributes: {
@@ -99,24 +99,24 @@ describe('Degrees', function () {
       );
     });
   });
-  describe('inDegree', function () {
+  describe('inDegree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
         inDegree({});
       }, /instance/);
     });
-    it('should thow an error if given Graph is undirected', function () {
-      assert.throws(function () {
+    it('should thow an error if given Graph is undirected', function() {
+      assert.throws(function() {
         inDegree(createGraph('undirected'));
       }, /undirected/);
     });
-    it('should calculate all inDegrees', function () {
+    it('should calculate all inDegrees', function() {
       assert.deepEqual(
         inDegree(createGraph('directed')),
         {1: 1, 2: 2, 3: 1}
       );
     });
-    it('should assign to graph', function () {
+    it('should assign to graph', function() {
       var graph = createGraph('directed');
       inDegree.assign(graph);
       assert.equal(
@@ -124,7 +124,7 @@ describe('Degrees', function () {
         1
       );
     });
-    it('should assign all degrees to their nodes with custom name', function () {
+    it('should assign all degrees to their nodes with custom name', function() {
       var graph = createGraph('directed');
       inDegree.assign(graph, {
         attributes: {
@@ -137,24 +137,24 @@ describe('Degrees', function () {
       );
     });
   });
-  describe('outDegree', function () {
+  describe('outDegree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
         outDegree({});
       }, /instance/);
     });
-    it('should thow an error if given Graph is undirected', function () {
-      assert.throws(function () {
+    it('should thow an error if given Graph is undirected', function() {
+      assert.throws(function() {
         outDegree(createGraph('undirected'));
       }, /undirected/);
     });
-    it('should calculate all outDegrees', function () {
+    it('should calculate all outDegrees', function() {
       assert.deepEqual(
         outDegree(createGraph('directed')),
         {1: 1, 2: 1, 3: 2}
       );
     });
-    it('should assign to graph', function () {
+    it('should assign to graph', function() {
       var graph = createGraph('directed');
       outDegree.assign(graph);
       assert.equal(
@@ -162,7 +162,7 @@ describe('Degrees', function () {
         1
       );
     });
-    it('should assign all degrees to their nodes with custom name', function () {
+    it('should assign all degrees to their nodes with custom name', function() {
       var graph = createGraph('directed');
       outDegree.assign(graph, {
         attributes: {
@@ -175,24 +175,24 @@ describe('Degrees', function () {
       );
     });
   });
-  describe('undirectedDegree', function () {
+  describe('undirectedDegree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
         undirectedDegree({});
       }, /instance/);
     });
-    it('should thow an error if given Graph is directed', function () {
-      assert.throws(function () {
+    it('should thow an error if given Graph is directed', function() {
+      assert.throws(function() {
         undirectedDegree(new Graph({type: 'directed'}));
       }, /directed/);
     });
-    it('should calculate all undirected degrees', function () {
+    it('should calculate all undirected degrees', function() {
       assert.deepEqual(
         undirectedDegree(createGraph('undirected')),
         {1: 2, 2: 2, 3: 2}
       );
     });
-    it('should assign to graph', function () {
+    it('should assign to graph', function() {
       var graph = createGraph('undirected');
       undirectedDegree.assign(graph);
       assert.equal(
@@ -200,7 +200,7 @@ describe('Degrees', function () {
         2
       );
     });
-    it('should assign all degrees to their nodes with custom name', function () {
+    it('should assign all degrees to their nodes with custom name', function() {
       var graph = createGraph('undirected');
       undirectedDegree.assign(graph, {
         attributes: {
@@ -213,24 +213,24 @@ describe('Degrees', function () {
       );
     });
   });
-  describe('directedDegree', function () {
+  describe('directedDegree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
         directedDegree(null);
       }, /instance/);
     });
-    it('should thow an error if given Graph is undirected', function () {
-      assert.throws(function () {
+    it('should thow an error if given Graph is undirected', function() {
+      assert.throws(function() {
         directedDegree(new Graph({type: 'undirected'}));
       }, /undirected/);
     });
-    it('should calculate all directed degrees', function () {
+    it('should calculate all directed degrees', function() {
       assert.deepEqual(
         directedDegree(createGraph('directed')),
         {1: 2, 2: 3, 3: 3}
       );
     });
-    it('should assign to graph', function () {
+    it('should assign to graph', function() {
       var graph = createGraph('directed');
       directedDegree.assign(graph);
       assert.equal(
@@ -238,7 +238,7 @@ describe('Degrees', function () {
         2
       );
     });
-    it('should assign all degrees to their nodes with custom name', function () {
+    it('should assign all degrees to their nodes with custom name', function() {
       var graph = createGraph('directed');
       directedDegree.assign(graph, {
         attributes: {
@@ -251,13 +251,13 @@ describe('Degrees', function () {
       );
     });
   });
-  describe('allDegree', function () {
+  describe('allDegree', function() {
     it('should throw if given wrong arguments.', function() {
       assert.throws(function() {
         allDegree({});
       }, /instance/);
     });
-    it('should calculate all degrees parameters on a directed graph', function () {
+    it('should calculate all degrees parameters on a directed graph', function() {
       assert.deepEqual(
         allDegree(createGraph('directed')),
         {
@@ -276,7 +276,7 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should calculate all degrees parameters on an undirected graph', function () {
+    it('should calculate all degrees parameters on an undirected graph', function() {
       assert.deepEqual(
         allDegree(createGraph('undirected')),
         {
@@ -292,7 +292,7 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should calculate all degrees parameters on a mixed multi graph', function () {
+    it('should calculate all degrees parameters on a mixed multi graph', function() {
       var graph = new Graph({multi: true, allowSelfLoops: true});
 
       graph.addNode(1);
@@ -351,7 +351,7 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should be possible to customize attributes indexes', function () {
+    it('should be possible to customize attributes indexes', function() {
       assert.deepEqual(
         allDegree(
           createGraph('directed'),
@@ -378,7 +378,7 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should be possible to customize attributes indexes and select wanted types', function () {
+    it('should be possible to customize attributes indexes and select wanted types', function() {
       assert.deepEqual(
         allDegree(
           createGraph('directed'),
@@ -403,7 +403,7 @@ describe('Degrees', function () {
         }
       );
     });
-    it('should assign', function () {
+    it('should assign', function() {
       var graph = createGraph('directed');
       allDegree.assign(graph);
       assert.equal(
@@ -419,7 +419,7 @@ describe('Degrees', function () {
         1
       );
     });
-    it('should assign with customized names', function () {
+    it('should assign with customized names', function() {
       var graph = createGraph('directed');
       allDegree.assign(graph, {
         attributes: {

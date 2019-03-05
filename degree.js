@@ -13,32 +13,33 @@ var DEFAULT_ATTRIBUTES = {
   directedDegree: 'directedDegree'
 };
 
-function abstractDegree (graph, callee, assign, type, options) {
+function abstractDegree(graph, callee, assign, type, options) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/' + callee + ': given graph is not a valid graphology instance.');
   if (graph.type === type) {
     throw new Error('graphology-metrics/' + callee + ': can not be calculated for ' + type + '  graphs.');
   }
   var nodes = graph.nodes();
+  var i = 0;
   if (assign) {
     var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
-    for (var j = 0; j < nodes.length; j++) {
+    for (i = 0; i < nodes.length; i++) {
       graph.setNodeAttribute(
-        nodes[j],
+        nodes[i],
         attributes[callee],
-        graph[callee](nodes[j])
+        graph[callee](nodes[i])
       );
     }
     return;
   }
   var hashmap = {};
-  for (var i = 0; i < nodes.length; i++) {
+  for (i = 0; i < nodes.length; i++) {
     hashmap[nodes[i]] = graph[callee](nodes[i]);
   }
   return hashmap;
 }
 
-function allDegree (graph, options, assign) {
+function allDegree(graph, options, assign) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/degree: given graph is not a valid graphology instance.');
   var attributes = Object.assign({}, DEFAULT_ATTRIBUTES, options && options.attributes);
@@ -56,29 +57,31 @@ function allDegree (graph, options, assign) {
   }
 
   if (options && options.types && options.types.length) {
-    types = defaultTypes.filter(function (type) {
+    types = defaultTypes.filter(function(type) {
       return options.types.indexOf(type) > -1;
     });
   }
   else {
     types = defaultTypes;
   }
+  var i = 0;
+  var j = 0;
   if (assign) {
-    for (var k = 0; k < nodes.length; k++) {
-      for (var l = 0; l < types.length; l++) {
+    for (i = 0; i < nodes.length; i++) {
+      for (j = 0; j < types.length; j++) {
         graph.setNodeAttribute(
-          nodes[k],
-          attributes[types[l]],
-          graph[types[l]](nodes[k])
+          nodes[i],
+          attributes[types[j]],
+          graph[types[j]](nodes[i])
         );
       }
     }
   }
   else {
     var hashmap = {};
-    for (var i = 0; i < nodes.length; i++) {
+    for (i = 0; i < nodes.length; i++) {
       var response = {};
-      for (var j = 0; j < types.length; j++) {
+      for (j = 0; j < types.length; j++) {
         response[attributes[types[j]]] = graph[types[j]](nodes[i]);
       }
       hashmap[nodes[i]] = response;
@@ -86,42 +89,42 @@ function allDegree (graph, options, assign) {
     return hashmap;
   }
 }
-allDegree.assign = function assignAllDegree (graph, options) {
+allDegree.assign = function assignAllDegree(graph, options) {
   allDegree(graph, options, true);
 };
 
-function degree (graph) {
+function degree(graph) {
   return abstractDegree(graph, 'degree');
 }
-degree.assign = function assignDegree (graph, options) {
+degree.assign = function assignDegree(graph, options) {
   abstractDegree(graph, 'degree', true, 'none', options);
 };
 
-function inDegree (graph) {
+function inDegree(graph) {
   return abstractDegree(graph, 'inDegree', false, 'undirected');
 }
-inDegree.assign = function assignInDegree (graph, options) {
+inDegree.assign = function assignInDegree(graph, options) {
   abstractDegree(graph, 'inDegree', true, 'undirected', options);
 };
 
-function outDegree (graph) {
+function outDegree(graph) {
   return abstractDegree(graph, 'outDegree', false, 'undirected');
 }
-outDegree.assign = function assignOutDegree (graph, option) {
+outDegree.assign = function assignOutDegree(graph, option) {
   abstractDegree(graph, 'outDegree', true, 'undirected', option);
 };
 
-function undirectedDegree (graph) {
+function undirectedDegree(graph) {
   return abstractDegree(graph, 'undirectedDegree', false, 'directed');
 }
-undirectedDegree.assign = function assignUndirectedDegree (graph, option) {
+undirectedDegree.assign = function assignUndirectedDegree(graph, option) {
   abstractDegree(graph, 'undirectedDegree', true, 'directed', option);
 };
 
-function directedDegree (graph) {
+function directedDegree(graph) {
   return abstractDegree(graph, 'directedDegree', false, 'undirected');
 }
-directedDegree.assign = function assignUndirectedDegree (graph, option) {
+directedDegree.assign = function assignUndirectedDegree(graph, option) {
   abstractDegree(graph, 'directedDegree', true, 'undirected', option);
 };
 
@@ -130,5 +133,6 @@ degree.outDegree = outDegree;
 degree.undirectedDegree = undirectedDegree;
 degree.directedDegree = directedDegree;
 degree.allDegree = allDegree;
+degree.abstractDegree = abstractDegree;
 
 module.exports = degree;
