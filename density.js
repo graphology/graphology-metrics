@@ -107,6 +107,10 @@ function abstractDensity(type, multi, graph) {
       size = simpleSizeForMultiGraphs(graph);
   }
 
+  // When the graph has only one node, its density is 0
+  if (order < 2)
+    return 0;
+
   // Guessing type & multi
   if (type === null)
     type = graph.type;
