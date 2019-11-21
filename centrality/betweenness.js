@@ -14,7 +14,7 @@ var isGraph = require('graphology-utils/is-graph'),
  */
 var DEFAULTS = {
   attributes: {
-    centrality: 'beetweennessCentrality',
+    centrality: 'betweennessCentrality',
     weight: 'weight'
   },
   normalized: true,
@@ -126,7 +126,7 @@ function abstractBetweennessCentrality(assign, graph, options) {
 /**
  * Exporting.
  */
-var beetweennessCentrality = abstractBetweennessCentrality.bind(null, false);
-beetweennessCentrality.assign = abstractBetweennessCentrality.bind(null, true);
+var betweennessCentrality = abstractBetweennessCentrality.bind(null, false);
+betweennessCentrality.assign = abstractBetweennessCentrality.bind(null, true);
 
-module.exports = beetweennessCentrality;
+module.exports = betweennessCentrality;

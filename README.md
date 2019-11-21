@@ -232,7 +232,7 @@ const centrality = betweennessCentrality(graph);
 // To compute weighted betweenness centrality
 const centrality = betweennessCentrality(graph, {weighted: true});
 
-// To directly map the result onto nodes' attributes (`beetweennessCentrality`):
+// To directly map the result onto nodes' attributes (`betweennessCentrality`):
 betweennessCentrality.assign(graph);
 
 // To directly map the result onto a custom attribute:
