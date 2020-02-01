@@ -236,7 +236,7 @@ const centrality = betweennessCentrality(graph, {weighted: true});
 betweennessCentrality.assign(graph);
 
 // To directly map the result onto a custom attribute:
-betweennessCentrality.assign(graph, {attributes: 'myCentrality'});
+betweennessCentrality.assign(graph, {attributes: {centrality: 'myCentrality'}});
 ```
 
 *Arguments*
