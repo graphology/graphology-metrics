@@ -1,8 +1,9 @@
-var {UndirectedGraph} = require('graphology');
+/* eslint no-console: 0 */
+var Graph = require('graphology');
 var betweenness = require('../centrality/betweenness');
 var data = require('./resources/betweenness.json');
 
-var graph = UndirectedGraph.from(data);
+var graph = Graph.UndirectedGraph.from(data);
 
 console.time('betweenness');
 betweenness(graph);

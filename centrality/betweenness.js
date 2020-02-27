@@ -48,9 +48,8 @@ function abstractBetweennessCentrality(assign, graph, options) {
       normalized = options.normalized,
       weighted = options.weighted;
 
-  var shortestPath = weighted ?
-    dijkstraShotestPath.brandes :
-    unweightedShortestPath.brandes;
+  /* eslint no-unused-vars: 0 */
+  var shortestPath = unweightedShortestPath.createIndexedBrandes(graph);
 
   var nodes = graph.nodes(),
       node,
@@ -75,7 +74,7 @@ function abstractBetweennessCentrality(assign, graph, options) {
   for (i = 0, l = nodes.length; i < l; i++) {
     node = nodes[i];
 
-    result = shortestPath(graph, node, weightAttribute);
+    result = shortestPath(node);
 
     S = result[0];
     P = result[1];
