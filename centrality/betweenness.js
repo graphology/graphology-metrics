@@ -57,7 +57,6 @@ function abstractBetweennessCentrality(assign, graph, options) {
       S,
       P,
       sigma,
-      delta,
       coefficient,
       i,
       j,
@@ -65,6 +64,8 @@ function abstractBetweennessCentrality(assign, graph, options) {
       m,
       v,
       w;
+
+  var delta = {};
 
   // Initializing centralities
   for (i = 0, l = nodes.length; i < l; i++)
@@ -80,13 +81,13 @@ function abstractBetweennessCentrality(assign, graph, options) {
     P = result[1];
     sigma = result[2];
 
-    delta = {};
-
     // Accumulating
-    for (j = 0, m = S.length; j < m; j++)
-      delta[S[j]] = 0;
+    j = S.size;
 
-    while (S.length) {
+    while (j--)
+      delta[S.items[S.size - j]] = 0;
+
+    while (S.size !== 0) {
       w = S.pop();
       coefficient = (1 + delta[w]) / sigma[w];
 
