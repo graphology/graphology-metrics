@@ -5,9 +5,11 @@
  * Function computing betweenness centrality.
  */
 var isGraph = require('graphology-utils/is-graph'),
-    unweightedShortestPath = require('graphology-shortest-path/unweighted'),
-    dijkstraShotestPath = require('graphology-shortest-path/dijkstra'),
+    lib = require('graphology-shortest-path/indexed-brandes'),
     defaults = require('lodash/defaults');
+
+var createUnweightedIndexedBrandes = lib.createUnweightedIndexedBrandes,
+    createDijkstraIndexedBrandes = lib.createDijkstraIndexedBrandes;
 
 /**
  * Defaults.
@@ -38,8 +40,6 @@ function abstractBetweennessCentrality(assign, graph, options) {
   if (!isGraph(graph))
     throw new Error('graphology-centrality/beetweenness-centrality: the given graph is not a valid graphology instance.');
 
-  var centralities = {};
-
   // Solving options
   options = defaults({}, options, DEFAULTS);
 
@@ -48,34 +48,29 @@ function abstractBetweennessCentrality(assign, graph, options) {
       normalized = options.normalized,
       weighted = options.weighted;
 
-  /* eslint no-unused-vars: 0 */
-  var shortestPath = unweightedShortestPath.createIndexedBrandes(graph);
+  var brandes = weighted ?
+    createDijkstraIndexedBrandes(graph, weightAttribute) :
+    createUnweightedIndexedBrandes(graph);
 
-  var nodes = graph.nodes(),
-      node,
-      result,
+  var N = graph.order;
+
+  var result,
       S,
       P,
       sigma,
       coefficient,
       i,
       j,
-      l,
       m,
       v,
       w;
 
-  var delta = {};
-
-  // Initializing centralities
-  for (i = 0, l = nodes.length; i < l; i++)
-    centralities[nodes[i]] = 0;
+  var delta = new Float64Array(N),
+      centralities = new Float64Array(N);
 
   // Iterating over each node
-  for (i = 0, l = nodes.length; i < l; i++) {
-    node = nodes[i];
-
-    result = shortestPath(node);
+  for (i = 0; i < N; i++) {
+    result = brandes(i);
 
     S = result[0];
     P = result[1];
@@ -96,31 +91,28 @@ function abstractBetweennessCentrality(assign, graph, options) {
         delta[v] += sigma[v] * coefficient;
       }
 
-      if (w !== node)
+      if (w !== i)
         centralities[w] += delta[w];
     }
   }
 
   // Rescaling
-  var n = graph.order,
-      scale = null;
+  var scale = null;
 
   if (normalized)
-    scale = n <= 2 ? null : (1 / ((n - 1) * (n - 2)));
+    scale = N <= 2 ? null : (1 / ((N - 1) * (N - 2)));
   else
     scale = graph.type === 'undirected' ? 0.5 : null;
 
   if (scale !== null) {
-    for (node in centralities)
-      centralities[node] *= scale;
+    for (i = 0; i < N; i++)
+      centralities[i] *= scale;
   }
 
-  if (assign) {
-    for (node in centralities)
-      graph.setNodeAttribute(node, centralityAttribute, centralities[node]);
-  }
+  if (assign)
+    return brandes.index.assign(centralityAttribute, centralities);
 
-  return centralities;
+  return brandes.index.collect(centralities);
 }
 
 /**

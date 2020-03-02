@@ -56,10 +56,13 @@
         2,
         "never"
       ]
+    },
+    "globals": {
+      "Float64Array": true
     }
   },
   "dependencies": {
-    "graphology-shortest-path": "1.1.0-alpha1",
+    "graphology-shortest-path": "^1.1.0",
     "graphology-types": "^0.15.4",
     "graphology-utils": "^1.6.1",
     "lodash": "^4.17.11"

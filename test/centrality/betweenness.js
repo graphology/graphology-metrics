@@ -16,8 +16,6 @@ var complete = generators.classic.complete.bind(null, UndirectedGraph),
     directedPath = generators.classic.path.bind(null, DirectedGraph),
     ladder = generators.classic.ladder.bind(null, UndirectedGraph);
 
-
-
 function deepApproximatelyEqual(t, o, precision) {
   for (var k in t)
     assert.approximately(t[k], o[k], precision);
@@ -295,7 +293,7 @@ describe('betweenness centrality', function() {
     });
   });
 
-  it.skip('Weighted graph 1', function() {
+  it('Weighted graph 1', function() {
     var graph = getWeightedGraph1();
 
     var centralities = betweenness(graph, {normalized: false, weighted: true});
@@ -310,7 +308,7 @@ describe('betweenness centrality', function() {
     });
   });
 
-  it.skip('Weighted graph 2', function() {
+  it('Weighted graph 2', function() {
     var graph = getWeightedGraph2();
 
     var centralities = betweenness(graph, {normalized: false, weighted: true});
@@ -324,7 +322,7 @@ describe('betweenness centrality', function() {
     });
   });
 
-  it.skip('Assining', function() {
+  it('Assining', function() {
     var graph = getWeightedGraph2('w');
 
     betweenness.assign(graph, {
