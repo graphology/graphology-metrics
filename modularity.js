@@ -20,11 +20,13 @@ var DEFAULTS = {
 };
 
 /*
-We should go towards: D = 1/(4*m) * Sum[Aij - ki*kj/(2*m)]
+We should go towards: D = 1/(4*m) * Sum[Aij - ki*kj/(2*m)] * delta(ci, cj)
 where m = sum of weight
       Aij = weight between i & j
       ki = weighted outdegree of i
       kj = weighted indegree of j
+      ci = community of i
+      cj = community of j
 */
 
 /**
