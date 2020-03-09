@@ -19,6 +19,14 @@ var DEFAULTS = {
   weighted: true
 };
 
+/*
+We should go towards: D = 1/(4*m) * Sum[Aij - ki*kj/(2*m)]
+where m = sum of weight
+      Aij = weight between i & j
+      ki = weighted outdegree of i
+      kj = weighted indegree of j
+*/
+
 /**
  * Function returning the modularity of the given graph.
  *
