@@ -120,6 +120,7 @@ const Q = modularity(graph, {
   * **attributes** *?object*: attributes' names:
     * **community** *?string* [`community`]: name of the nodes' community attribute in case we need to read them from the graph itself.
     * **weight** *?string* [`weight`]: name of the edges' weight attribute.
+  * **weighted** *?boolean* [`true`]: whether to compute weighted modularity or not.
 
 ### Weighted size
 

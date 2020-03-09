@@ -7,7 +7,8 @@ type ModularityOptions = {
     community: string,
     weight: string
   },
-  communities: CommunityMapping
+  communities: CommunityMapping,
+  weighted: boolean
 };
 
 export default function modularity(graph: Graph, options?: ModularityOptions): number;

@@ -162,7 +162,7 @@ describe('modularity', function() {
     assert.closeTo(modularity(graph), 0.337, 0.01);
   });
 
-  it('should handle tiny directed graphs (5 nodes).', function() {
+  it.skip('should handle tiny directed graphs (5 nodes).', function() {
     var graph = new Graph({type: 'directed'});
 
     graph.mergeDirectedEdge(1, 2);
