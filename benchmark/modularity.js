@@ -27,22 +27,6 @@ var degrees = nodes.map(n => g.degree(n[0]));
 var M = 6; // Undirected size (minus 1 mutual edge)
 var M2 = M * 2;
 
-function hasUndirectedEdge(E, s, t) {
-  return E.some(e => {
-    return (e[0] === s && e[1] === t) || (e[1] === s && e[0] === t);
-  });
-}
-
-function hasMutualEdge(E, s, t) {
-  return hasDirectedEdge(E, s, t) && hasDirectedEdge(E, t, s);
-}
-
-function hasDirectedEdge(E, s, t) {
-  return E.some(e => {
-    return (e[0] === s && e[1] === t);
-  });
-}
-
 var S = 0, Aij, didj;
 
 var tot = {1: 0, 2: 0}, int = {1: 0, 2: 0}, ext = {1: 0, 2: 0};
@@ -51,7 +35,7 @@ var i, j, l, ok;
 
 for (i = 0, l = nodes.length; i < l; i++) {
   for (j = i + 1; j < l; j++) {
-    ok = hasUndirectedEdge(edges, nodes[i][0], nodes[j][0]);
+    ok = g.hasEdge(nodes[i][0], nodes[j][0]);
 
     if (ok) {
       tot[nodes[i][1]] += 1;
@@ -70,7 +54,6 @@ for (i = 0, l = nodes.length; i < l; i++) {
 
     Aij = ok ? 1 : 0;
     didj = degrees[i] * degrees[j];
-
     S += Aij - (didj / M2);
   }
 }
