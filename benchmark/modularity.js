@@ -23,7 +23,7 @@ var g = new Graph.UndirectedGraph();
 edges.forEach(e => g.mergeEdge(e[0], e[1]));
 
 var degrees = nodes.map(n => g.degree(n[0]));
-console.log(degrees)
+
 var M = 6; // Undirected size (minus 1 mutual edge)
 var M2 = M * 2;
 
@@ -75,13 +75,17 @@ for (i = 0, l = nodes.length; i < l; i++) {
   }
 }
 
+var Q = S / M2;
+var SPARSE_Q = ((int[1] - (tot[1] * tot[1] / M2)) + (int[2] - (tot[2] * tot[2] / M2))) / M2;
+var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[1] / M2) - Math.pow(tot[1] / M2, 2));
+
 console.log('S = ', S);
-console.log('Q = ', S / M2);
+console.log('Q = ', Q.toFixed(3));
 console.log('tot1', tot[1], 'tot2', tot[2]);
 console.log('int1', int[1], 'int2', int[2]);
 console.log('ext1', ext[1], 'ext2', ext[2]);
-console.log('sparse Q = ', ((int[1] - (tot[1] * tot[1] / M2)) + (int[2] - (tot[2] * tot[2] / M2))) / M2)
-console.log('other sparse Q =', ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[1] / M2) - Math.pow(tot[1] / M2, 2)))
+console.log('sparse Q = ', SPARSE_Q.toFixed(3));
+console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(3));
 
 // 1/2m ∑ij[Aij - (di.dj / 2m)].∂(ci, cj)
 // ∑c[(∑c-internal / 2m) - (∑c-total / 2m)²]
