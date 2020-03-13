@@ -45,6 +45,10 @@
  *  - ∑c-internal is the number of a community internal edges
  *  - ∑c-total is the total number of edges connected to a community
  *
+ * Note that dense version run in O(N²) while sparse version runs in O(V). So
+ * the dense version is mostly here to guarantee the validity of the sparse one.
+ * As such it is not used as default.
+ *
  * [Articles]
  * M. E. J. Newman, « Modularity and community structure in networks »,
  * Proc. Natl. Acad. Sci. USA, vol. 103, no 23,‎ 2006, p. 8577–8582
