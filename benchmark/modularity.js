@@ -121,10 +121,15 @@ for (i = 0, l = nodes.length; i < l; i++) {
   }
 }
 
+Q = S / M;
+
 console.log();
 console.log('Directed case:');
-console.log('----------------');
+console.log('--------------');
 console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
 console.log();
+
+
+// test 2 trival case, test connected components and zero nodes
