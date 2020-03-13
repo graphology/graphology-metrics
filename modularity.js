@@ -60,16 +60,102 @@
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
  */
-// var defaults = require('lodash/defaultsDeep');
+var defaults = require('lodash/defaultsDeep'),
+    take = require('obliterator/take'),
+    weightedSize = require('./weighted-size.js');
 
-// var DEFAULTS = {
-//   attributes: {
-//     community: 'community',
-//     weight: 'weight'
-//   },
-//   weighted: true
-// };
+var DEFAULTS = {
+  attributes: {
+    community: 'community',
+    weight: 'weight'
+  },
+  communities: null,
+  weighted: true
+};
 
-// function undirectedDenseModularity(graph, options) {
-//   var nodeEntries
-// }
+function createWeightGetter(weighted, weightAttribute) {
+  return function(attr) {
+    if (!attr)
+      return 0;
+
+    if (!weighted)
+      return 1;
+
+    var w = attr[weightAttribute];
+
+    if (typeof w !== 'number')
+      w = 1;
+
+    return w;
+  };
+}
+
+function collectCommunities(entries, options) {
+  var i, l, entry;
+
+  var communities = new Array(entries.length);
+
+  for (i = 0, l = entries.length; i < l; i++) {
+    entry = entries[i];
+
+    communities[i] = options.communities ?
+      options.communities[entry[0]] :
+      entry[1][options.attributes.community];
+  }
+
+  return communities;
+}
+
+function undirectedDenseModularity(graph, options) {
+
+  // TODO: move somewhere upper
+  // TODO: should get weighted degree
+  options = defaults({}, options || {}, DEFAULTS);
+
+  var nodeEntries = take(graph.nodeEntries(), graph.order);
+
+  var communities = collectCommunities(nodeEntries, options);
+
+  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
+
+  // TODO: should get weighted size
+  var M = graph.size;
+
+  var i, j, l, w, Aij, didj, iEntry, jEntry, edgeAttributes;
+
+  var S = 0;
+
+  var M2 = M * 2;
+
+  for (i = 0, l = graph.order; i < l; i++) {
+    iEntry = nodeEntries[i];
+
+    S += 0 - (Math.pow(graph.degree(iEntry[0]), 2) / M2);
+
+    // NOTE: it is important to parse the whole matrix here, diagonal and
+    // lower part included. A lot of implementation differ here because
+    // they process only a part of the matrix
+    for (j = i + 1; j < l; j++) {
+
+      // NOTE: Kronecker's delta
+      if (communities[i] !== communities[j])
+        continue;
+
+      jEntry = nodeEntries[j];
+
+      edgeAttributes = graph.undirectedEdge(iEntry[0], jEntry[0]);
+      w = getWeight(edgeAttributes);
+
+      Aij = w;
+      didj = graph.degree(iEntry[0]) * graph.degree(jEntry[0]);
+
+      S += (Aij - (didj / M2)) * 2;
+    }
+  }
+
+  return S / M2;
+}
+
+module.exports = {
+  undirectedDenseModularity: undirectedDenseModularity
+};

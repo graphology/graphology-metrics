@@ -1,4 +1,5 @@
 var Graph = require('graphology');
+var lib = require('../modularity.js');
 
 var nodes = [
   [1, 1], // id, community
@@ -20,6 +21,7 @@ var edges = [
 ];
 
 var g = new Graph.UndirectedGraph();
+nodes.forEach(n => g.addNode(n[0], {community: n[1]}));
 edges.forEach(e => g.mergeEdge(e[0], e[1]));
 
 var degrees = nodes.map(n => g.degree(n[0]));
@@ -35,7 +37,21 @@ var i, j, l, ok;
 
 for (i = 0, l = nodes.length; i < l; i++) {
 
-  // TODO: j should be 0 -> should scan diagonal and lower part
+  // NOTE: j = 0, not i + 1 here
+  for (j = 0; j < l; j++) {
+
+    // Kronecker delta
+    if (nodes[i][1] !== nodes[j][1])
+      continue;
+
+    ok = g.hasEdge(nodes[i][0], nodes[j][0]);
+    Aij = ok ? 1 : 0;
+    didj = degrees[i] * degrees[j];
+    S += Aij - (didj / M2);
+  }
+}
+
+for (i = 0, l = nodes.length; i < l; i++) {
   for (j = i + 1; j < l; j++) {
     ok = g.hasEdge(nodes[i][0], nodes[j][0]);
 
@@ -53,10 +69,6 @@ for (i = 0, l = nodes.length; i < l; i++) {
 
     if (ok)
       int[nodes[i][1]] += 2;
-
-    Aij = ok ? 1 : 0;
-    didj = degrees[i] * degrees[j];
-    S += Aij - (didj / M2);
   }
 }
 
@@ -67,6 +79,7 @@ var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[2] / M2)
 console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
+console.log('lib Q =', lib.undirectedDenseModularity(g).toFixed(4));
 console.log('tot1', tot[1], 'tot2', tot[2]);
 console.log('int1', int[1], 'int2', int[2]);
 console.log('ext1', ext[1], 'ext2', ext[2]);
