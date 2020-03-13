@@ -8,8 +8,8 @@
  * of different definitions and implementations. The current implementation
  * try to stay true to Newman's original definition and consider both the
  * undirected & directed case as well as the weighted one. The current
- * implementation should also be aligned with the Louvain algorithm's
- * definition of the metric.
+ * implementation should also be aligned with Louvain algorithm's definition
+ * of the metric.
  *
  * Hence, here are the retained formulas:
  *
@@ -60,6 +60,8 @@
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
  */
+
+// TODO: drop obliterator dep
 var defaults = require('lodash/defaultsDeep'),
     take = require('obliterator/take');
 
@@ -156,6 +158,62 @@ function undirectedDenseModularity(graph, options) {
   return S / M2;
 }
 
+function undirectedSparseModularity(graph, options) {
+  options = defaults({}, options || {}, DEFAULTS);
+
+  var M = 0;
+
+  var totalWeights = {},
+      internalWeights = {};
+
+  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
+
+  var getCommunity = function(node, attr) {
+    return attr[options.attributes.community];
+  };
+
+  if (options.communities)
+    getCommunity = function(node) {
+      return options.communities[node];
+    };
+
+  graph.forEachUndirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
+    var weight = getWeight(edgeAttr);
+
+    M += weight;
+
+    var sourceCommunity = getCommunity(source, sourceAttr);
+    var targetCommunity = getCommunity(target, targetAttr);
+
+    if (!(sourceCommunity in totalWeights))
+      totalWeights[sourceCommunity] = weight;
+    else
+      totalWeights[sourceCommunity] += weight;
+
+    if (!(targetCommunity in totalWeights))
+      totalWeights[targetCommunity] = weight;
+    else
+      totalWeights[targetCommunity] += weight;
+
+    if (sourceCommunity !== targetCommunity)
+      return;
+
+    if (!(sourceCommunity in internalWeights))
+      internalWeights[sourceCommunity] = weight * 2;
+    else
+      internalWeights[sourceCommunity] += weight * 2;
+  });
+
+  var Q = 0,
+      M2 = M * 2;
+
+  for (var C in totalWeights)
+    Q += (internalWeights[C] || 0) / M2 - Math.pow(totalWeights[C] / M2, 2);
+
+  return Q;
+}
+
 module.exports = {
-  undirectedDenseModularity: undirectedDenseModularity
+  undirectedDenseModularity: undirectedDenseModularity,
+  undirectedSparseModularity: undirectedSparseModularity
 };
