@@ -3,20 +3,20 @@ var Graph = require('graphology');
 var nodes = [
   [1, 1], // id, community
   [2, 2],
-  [3, 2],
-  [4, 2],
-  [5, 1],
-  [6, 2]
+  // [3, 2],
+  // [4, 2],
+  // [5, 1],
+  // [6, 2]
 ];
 
 var edges = [
   [1, 2], // source, target
-  [1, 5],
-  [2, 3],
-  [3, 4],
-  [4, 2],
-  [5, 1],
-  [6, 3]
+  // [1, 5],
+  // [2, 3],
+  // [3, 4],
+  // [4, 2],
+  // [5, 1],
+  // [6, 3]
 ];
 
 var g = new Graph.UndirectedGraph();
@@ -60,7 +60,7 @@ for (i = 0, l = nodes.length; i < l; i++) {
 
 var Q = S / M2;
 var SPARSE_Q = ((int[1] - (tot[1] * tot[1] / M2)) + (int[2] - (tot[2] * tot[2] / M2))) / M2;
-var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[1] / M2) - Math.pow(tot[1] / M2, 2));
+var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[2] / M2) - Math.pow(tot[2] / M2, 2));
 
 console.log('M = ', M);
 console.log('S = ', S);
