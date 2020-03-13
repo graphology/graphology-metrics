@@ -66,6 +66,7 @@
     "graphology-shortest-path": "^1.1.1",
     "graphology-types": "^0.16.0",
     "graphology-utils": "^1.6.1",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "obliterator": "^1.6.1"
   }
 }

@@ -11,6 +11,40 @@
  * implementation should also be aligned with the Louvain algorithm's
  * definition of the metric.
  *
+ * Hence, here are the retained formulas:
+ *
+ * For dense weighted undirected network:
+ * --------------------------------------
+ *
+ * 1/2m * [ ∑ij[Aij - (di.dj / 2m)] * ∂(ci, cj) ]
+ *
+ * where:
+ *  - i & j being a pair of nodes
+ *  - m is the sum of edge weights
+ *  - Aij being the weight of the ij edge (or 0 if absent)
+ *  - di being the weighted degree of node i
+ *  - ci being the community to which belongs node i
+ *  - ∂ is Kronecker's delta function (1 if x = y else 0)
+ *
+ * For dense weighted directed network:
+ * ------------------------------------
+ *
+ * 1/m * [ ∑ij[Aij - (din-i.dout-j / m)] * ∂(ci, cj) ]
+ *
+ * where:
+ *  - din-i is the in degree of node i
+ *  - dout-i is the out degree of node i
+ *
+ * For sparse weighted undirected network:
+ * --------------------------------------
+ *
+ * ∑c[ (∑c-internal / 2m) - (∑c-total / 2m)² ]
+ *
+ * where:
+ *  - c is a community
+ *  - ∑c-internal is the number of a community internal edges
+ *  - ∑c-total is the total number of edges connected to a community
+ *
  * [Articles]
  * M. E. J. Newman, « Modularity and community structure in networks »,
  * Proc. Natl. Acad. Sci. USA, vol. 103, no 23,‎ 2006, p. 8577–8582
@@ -26,9 +60,7 @@
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
  */
-// var defaults = require('lodash/defaultsDeep'),
-//     isGraph = require('graphology-utils/is-graph'),
-//     inferType = require('graphology-utils/infer-type');
+// var defaults = require('lodash/defaultsDeep');
 
 // var DEFAULTS = {
 //   attributes: {
@@ -37,3 +69,7 @@
 //   },
 //   weighted: true
 // };
+
+// function undirectedDenseModularity(graph, options) {
+//   var nodeEntries
+// }
