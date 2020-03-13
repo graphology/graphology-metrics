@@ -1,22 +1,29 @@
+var Graph = require('graphology');
+
 var nodes = [
-  [1, 1, 2], // id, C, deg
-  [2, 2, 3],
-  [3, 2, 2],
-  [4, 2, 2],
-  [5, 1, 1],
-  [6, 2, 1]
+  [1, 1], // id, community
+  [2, 2],
+  [3, 2],
+  [4, 2],
+  [5, 1],
+  [6, 2]
 ];
 
 var edges = [
-  [1, 2, null], // s, t, internal?
-  [1, 5, 1],
-  [2, 3, 2],
-  [3, 4, 2],
-  [4, 2, 2],
-  [5, 1, 1],
-  [6, 3, 2]
+  [1, 2], // source, target
+  [1, 5],
+  [2, 3],
+  [3, 4],
+  [4, 2],
+  [5, 1],
+  [6, 3]
 ];
 
+var g = new Graph.UndirectedGraph();
+edges.forEach(e => g.mergeEdge(e[0], e[1]));
+
+var degrees = nodes.map(n => g.degree(n[0]));
+console.log(degrees)
 var M = 6; // Undirected size (minus 1 mutual edge)
 var M2 = M * 2;
 
@@ -62,7 +69,7 @@ for (i = 0, l = nodes.length; i < l; i++) {
       int[nodes[i][1]] += 2;
 
     Aij = ok ? 1 : 0;
-    didj = nodes[i][2] * nodes[j][2];
+    didj = degrees[i] * degrees[j];
 
     S += Aij - (didj / M2);
   }
