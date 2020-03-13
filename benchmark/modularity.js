@@ -76,6 +76,9 @@ var Q = S / M2;
 var SPARSE_Q = ((int[1] - (tot[1] * tot[1] / M2)) + (int[2] - (tot[2] * tot[2] / M2))) / M2;
 var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[2] / M2) - Math.pow(tot[2] / M2, 2));
 
+console.log();
+console.log('Undirected case:');
+console.log('----------------');
 console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
@@ -91,3 +94,37 @@ console.log('lib sparse Q = ', lib.undirectedSparseModularity(g).toFixed(4));
 // ∑c[(∑c-internal / 2m) - (∑c-total / 2m)²]
 // self-loop do not count
 // note: sparse version is the same as igraph now
+
+var d = new Graph.DirectedGraph();
+nodes.forEach(n => d.addNode(n[0], {community: n[1]}));
+edges.forEach(e => d.mergeEdge(e[0], e[1]));
+
+var inDegrees = nodes.map(n => d.inDegree(n[0]));
+var outDegrees = nodes.map(n => d.outDegree(n[0]));
+
+M = d.size;
+S = 0;
+
+for (i = 0, l = nodes.length; i < l; i++) {
+
+  // NOTE: j = 0, not i + 1 here
+  for (j = 0; j < l; j++) {
+
+    // Kronecker delta
+    if (nodes[i][1] !== nodes[j][1])
+      continue;
+
+    ok = d.hasEdge(nodes[i][0], nodes[j][0]);
+    Aij = ok ? 1 : 0;
+    didj = inDegrees[i] * outDegrees[j];
+    S += Aij - (didj / M);
+  }
+}
+
+console.log();
+console.log('Directed case:');
+console.log('----------------');
+console.log('M = ', M);
+console.log('S = ', S);
+console.log('Q = ', Q.toFixed(4));
+console.log();
