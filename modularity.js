@@ -61,8 +61,7 @@
  * https://hal.archives-ouvertes.fr/hal-01231784
  */
 var defaults = require('lodash/defaultsDeep'),
-    take = require('obliterator/take'),
-    weightedSize = require('./weighted-size.js');
+    take = require('obliterator/take');
 
 var DEFAULTS = {
   attributes: {
@@ -138,6 +137,7 @@ function undirectedDenseModularity(graph, options) {
     for (j = i + 1; j < l; j++) {
 
       // NOTE: Kronecker's delta
+      // NOTE: we could go from O(n * (n - 1)) to O(avg.C^2)
       if (communities[i] !== communities[j])
         continue;
 
