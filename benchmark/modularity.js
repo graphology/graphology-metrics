@@ -24,7 +24,7 @@ edges.forEach(e => g.mergeEdge(e[0], e[1]));
 
 var degrees = nodes.map(n => g.degree(n[0]));
 
-var M = 6; // Undirected size (minus 1 mutual edge)
+var M = g.size; // Undirected size (minus 1 mutual edge)
 var M2 = M * 2;
 
 var S = 0, Aij, didj;
