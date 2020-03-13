@@ -62,6 +62,7 @@ var Q = S / M2;
 var SPARSE_Q = ((int[1] - (tot[1] * tot[1] / M2)) + (int[2] - (tot[2] * tot[2] / M2))) / M2;
 var OTHER_SPARSE_Q = ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((int[1] / M2) - Math.pow(tot[1] / M2, 2));
 
+console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
 console.log('tot1', tot[1], 'tot2', tot[2]);
