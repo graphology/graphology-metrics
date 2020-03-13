@@ -3,20 +3,20 @@ var Graph = require('graphology');
 var nodes = [
   [1, 1], // id, community
   [2, 2],
-  // [3, 2],
-  // [4, 2],
-  // [5, 1],
-  // [6, 2]
+  [3, 2],
+  [4, 2],
+  [5, 1],
+  [6, 2]
 ];
 
 var edges = [
   [1, 2], // source, target
-  // [1, 5],
-  // [2, 3],
-  // [3, 4],
-  // [4, 2],
-  // [5, 1],
-  // [6, 3]
+  [1, 5],
+  [2, 3],
+  [3, 4],
+  [4, 2],
+  [5, 1],
+  [6, 3]
 ];
 
 var g = new Graph.UndirectedGraph();
@@ -74,3 +74,4 @@ console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
 // 1/2m ∑ij[Aij - (di.dj / 2m)].∂(ci, cj)
 // ∑c[(∑c-internal / 2m) - (∑c-total / 2m)²]
 // self-loop do not count
+// note: sparse version is the same as igraph now
