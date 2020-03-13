@@ -34,6 +34,8 @@ var tot = {1: 0, 2: 0}, int = {1: 0, 2: 0}, ext = {1: 0, 2: 0};
 var i, j, l, ok;
 
 for (i = 0, l = nodes.length; i < l; i++) {
+
+  // TODO: j should be 0 -> should scan diagonal and lower part
   for (j = i + 1; j < l; j++) {
     ok = g.hasEdge(nodes[i][0], nodes[j][0]);
 
