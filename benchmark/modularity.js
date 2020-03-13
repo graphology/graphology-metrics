@@ -78,3 +78,4 @@ console.log('other sparse Q =', ((int[1] / M2) - Math.pow(tot[1] / M2, 2)) + ((i
 
 // 1/2m ∑ij[Aij - (di.dj / 2m)].∂(ci, cj)
 // ∑c[(∑c-internal / 2m) - (∑c-total / 2m)²]
+// self-loop do not count
