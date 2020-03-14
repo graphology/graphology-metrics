@@ -48,7 +48,7 @@
  * For sparse weighted directed network:
  * -------------------------------------
  *
- * Qd = ∑c[ (∑cinternal / m) - (∑cintotal / m) * (∑couttotal / m) ]
+ * Qd = ∑c[ (∑cinternal / m) - (∑cintotal * ∑couttotal / m²) ]
  *
  * where:
  *  - ∑cintotal is the total weight of edges pointing towards a community
