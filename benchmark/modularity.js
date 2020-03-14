@@ -127,7 +127,10 @@ int = {1: 0, 2: 0};
 ext = {1: 0, 2: 0};
 
 for (i = 0, l = nodes.length; i < l; i++) {
-  for (j = i + 1; j < l; j++) {
+  for (j = 0; j < l; j++) {
+    if (i === j)
+      continue;
+
     ok = d.hasEdge(nodes[i][0], nodes[j][0]);
 
     if (ok) {
@@ -154,8 +157,6 @@ Q = S / M;
 OTHER_SPARSE_Q =
   ((int[1] / M) - Math.pow((totIn[1] + totOut[1]) / M, 2)) +
   ((int[2] / M) - Math.pow((totIn[2] + totOut[2]) / M, 2));
-
-// OTHER_SPARSE_Q *= 2
 
 console.log();
 console.log('Directed case:');
