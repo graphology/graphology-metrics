@@ -121,7 +121,41 @@ for (i = 0, l = nodes.length; i < l; i++) {
   }
 }
 
+var totIn = {1: 0, 2: 0}, totOut = {1: 0, 2: 0};
+tot = {1: 0, 2: 0};
+int = {1: 0, 2: 0};
+ext = {1: 0, 2: 0};
+
+for (i = 0, l = nodes.length; i < l; i++) {
+  for (j = i + 1; j < l; j++) {
+    ok = d.hasEdge(nodes[i][0], nodes[j][0]);
+
+    if (ok) {
+      totOut[nodes[i][1]] += 1;
+      totIn[nodes[j][1]] += 1;
+      tot[nodes[i][1]] += 1;
+      tot[nodes[j][1]] += 1;
+    }
+
+    // Kronecker delta
+    if (nodes[i][1] !== nodes[j][1]) {
+      ext[nodes[i][1]] += 1;
+      ext[nodes[j][1]] += 1;
+      continue;
+    }
+
+    if (ok)
+      int[nodes[i][1]] += 2;
+  }
+}
+
 Q = S / M;
+
+OTHER_SPARSE_Q =
+  ((int[1] / M) - Math.pow((totIn[1] + totOut[1]) / M, 2)) +
+  ((int[2] / M) - Math.pow((totIn[2] + totOut[2]) / M, 2));
+
+// OTHER_SPARSE_Q *= 2
 
 console.log();
 console.log('Directed case:');
@@ -129,7 +163,13 @@ console.log('--------------');
 console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
+console.log('tot1', tot[1], 'tot2', tot[2]);
+console.log('totIn1', totIn[1], 'totIn2', totIn[2]);
+console.log('totOut1', totOut[1], 'totOut2', totOut[2]);
+console.log('int1', int[1], 'int2', int[2]);
+console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
 console.log();
 
 
-// test 2 trival case, test connected components and zero nodes
+// TODO: test 2 trival case, test connected components and node with no edges
+// TODO: also test empty graph
