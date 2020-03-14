@@ -149,7 +149,7 @@ for (i = 0, l = nodes.length; i < l; i++) {
     }
 
     if (ok)
-      int[nodes[i][1]] += 2;
+      int[nodes[i][1]] += 1;
   }
 }
 
