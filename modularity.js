@@ -72,6 +72,14 @@
  * Nicolas Dugué, Anthony Perez. Directed Louvain: maximizing modularity in
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
+ *
+ * [Latex]
+ *
+ * Sparse undirected
+ * Q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{2m} - \left(\frac{\sum\nolimits_{c\,tot}}{2m}\right )^2 \bigg{]}
+ *
+ * Sparse directed
+ *  Q_q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \left(\frac{\sum_{c\,tot}^{in}}{m} \frac{\sum_{c\,tot}^{out}}{m}\right ) \bigg{]}
  */
 
 // TODO: drop obliterator dep
