@@ -79,7 +79,7 @@
  * Q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{2m} - \left(\frac{\sum\nolimits_{c\,tot}}{2m}\right )^2 \bigg{]}
  *
  * Sparse directed
- *  Q_q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \left(\frac{\sum_{c\,tot}^{in}}{m} \frac{\sum_{c\,tot}^{out}}{m}\right ) \bigg{]}
+ * Q_d = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \left(\frac{\sum_{c\,tot}^{in}\sum_{c\,tot}^{out}}{m^2} \right ) \bigg{]}
  */
 
 // TODO: drop obliterator dep
