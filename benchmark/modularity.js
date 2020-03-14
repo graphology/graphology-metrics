@@ -175,3 +175,4 @@ console.log();
 
 // TODO: test 2 trival case, test connected components and node with no edges
 // TODO: also test empty graph
+// TODO: align with https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/quality.html
