@@ -103,6 +103,7 @@ var inDegrees = nodes.map(n => d.inDegree(n[0]));
 var outDegrees = nodes.map(n => d.outDegree(n[0]));
 
 M = d.size;
+M2 = M * 2;
 S = 0;
 
 for (i = 0, l = nodes.length; i < l; i++) {
@@ -155,8 +156,8 @@ for (i = 0, l = nodes.length; i < l; i++) {
 Q = S / M;
 
 OTHER_SPARSE_Q =
-  ((int[1] / M) - Math.pow((totIn[1] + totOut[1]) / M, 2)) +
-  ((int[2] / M) - Math.pow((totIn[2] + totOut[2]) / M, 2));
+  ((int[1] / M) - Math.pow(totIn[1] / M, 2) - Math.pow(totOut[1] / M, 2)) +
+  ((int[2] / M) - Math.pow(totIn[2] / M, 2) - Math.pow(totOut[2] / M, 2));
 
 console.log();
 console.log('Directed case:');
