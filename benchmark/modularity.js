@@ -156,8 +156,8 @@ for (i = 0, l = nodes.length; i < l; i++) {
 Q = S / M;
 
 OTHER_SPARSE_Q =
-  ((int[1] / M) - Math.pow(totIn[1] / M, 2) - Math.pow(totOut[1] / M, 2)) +
-  ((int[2] / M) - Math.pow(totIn[2] / M, 2) - Math.pow(totOut[2] / M, 2));
+  ((int[1] / M) - (totIn[1] / M) * (totOut[1] / M)) +
+  ((int[2] / M) - (totIn[2] / M) * (totOut[2] / M));
 
 console.log();
 console.log('Directed case:');
@@ -171,7 +171,6 @@ console.log('totOut1', totOut[1], 'totOut2', totOut[2]);
 console.log('int1', int[1], 'int2', int[2]);
 console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
 console.log();
-
 
 // TODO: test 2 trival case, test connected components and node with no edges
 // TODO: also test empty graph
