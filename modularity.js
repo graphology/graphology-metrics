@@ -29,14 +29,14 @@
  * For dense weighted directed network:
  * ------------------------------------
  *
- * Q = 1/m * [ ∑ij[Aij - (dini.doutj / m)] * ∂(ci, cj) ]
+ * Qd = 1/m * [ ∑ij[Aij - (dini.doutj / m)] * ∂(ci, cj) ]
  *
  * where:
  *  - dini is the in degree of node i
  *  - douti is the out degree of node i
  *
  * For sparse weighted undirected network:
- * --------------------------------------
+ * ---------------------------------------
  *
  * Q = ∑c[ (∑cinternal / 2m) - (∑ctotal / 2m)² ]
  *
@@ -44,6 +44,15 @@
  *  - c is a community
  *  - ∑cinternal is the total weight of a community internal edges
  *  - ∑ctotal is the total weight of edges connected to a community
+ *
+ * For sparse weighted directed network:
+ * -------------------------------------
+ *
+ * Qd = ∑c[ (∑cinternal / m) - (∑cintotal / m) * (∑couttotal / m) ]
+ *
+ * where:
+ *  - ∑cintotal is the total weight of edges pointing towards a community
+ *  - ∑couttotal is the total weight of edges going from a community
  *
  * Note that dense version run in O(N²) while sparse version runs in O(V). So
  * the dense version is mostly here to guarantee the validity of the sparse one.
