@@ -14,8 +14,8 @@ var UndirectedGraph = Graph.UndirectedGraph,
  * Datasets.
  */
 var clique3 = Graph.from(require('./datasets/clique3.json'), {type: 'directed'});
-// var directed500 = Graph.from(require('./datasets/directed500.json'), {type: 'directed'});
-// var undirected500 = Graph.from(require('./datasets/undirected500.json'), {type: 'undirected'});
+var directed500 = Graph.from(require('./datasets/directed500.json'), {type: 'directed'});
+var undirected500 = Graph.from(require('./datasets/undirected500.json'), {type: 'undirected'});
 
 /**
  * Helpers.
@@ -315,11 +315,11 @@ describe('modularity', function() {
     closeTo(modularity(clique3), 0.524);
   });
 
-  // it('should handle heavy-sized undirected graphs (500 nodes).', function() {
-  //   closeTo(modularity(undirected500), 0.397);
-  // });
+  it('should handle heavy-sized undirected graphs (500 nodes).', function() {
+    closeTo(modularity(undirected500), 0.404);
+  });
 
-  // it('should handle heavy-sized directed graphs (500 nodes).', function() {
-  //   assert.closeTo(modularity(directed500.graph, {communities: directed500.partitioning}), 0.408, 0.01);
-  // });
+  it('should handle heavy-sized directed graphs (500 nodes).', function() {
+    closeTo(modularity(directed500), 0.408);
+  });
 });
