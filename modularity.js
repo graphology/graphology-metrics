@@ -187,6 +187,7 @@ function undirectedDenseModularity(graph, options) {
       Aij = w;
       didj = weightedDegrees[i] * weightedDegrees[j];
 
+      // Here we multiply by two to simulate iteration through lower part
       S += (Aij - (didj / M2)) * 2;
     }
   }
@@ -194,57 +195,71 @@ function undirectedDenseModularity(graph, options) {
   return S / M2;
 }
 
+function collectCommunitesForUndirected(graph, options) {
+  var communities = {},
+      totalWeights = {},
+      internalWeights = {};
+
+  if (options.communities)
+    communities = options.communities;
+
+  graph.forEachNode(function(node, attr) {
+    var community;
+
+    if (!options.communities) {
+      community = attr[options.attributes.community];
+      communities[node] = community;
+    }
+    else {
+      community = communities[node];
+    }
+
+    totalWeights[community] = 0;
+    internalWeights[community] = 0;
+  });
+
+  return {
+    communities: communities,
+    totalWeights: totalWeights,
+    internalWeights: internalWeights
+  };
+}
+
 function undirectedSparseModularity(graph, options) {
   options = defaults({}, options || {}, DEFAULTS);
 
+  var result = collectCommunitesForUndirected(graph, options);
+
   var M = 0;
 
-  var totalWeights = {},
-      internalWeights = {};
+  var totalWeights = result.totalWeights,
+      internalWeights = result.internalWeights,
+      communities = result.communities;
 
   var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
-
-  var getCommunity = function(node, attr) {
-    return attr[options.attributes.community];
-  };
-
-  if (options.communities)
-    getCommunity = function(node) {
-      return options.communities[node];
-    };
 
   graph.forEachUndirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
     var weight = getWeight(edgeAttr);
 
     M += weight;
 
-    var sourceCommunity = getCommunity(source, sourceAttr);
-    var targetCommunity = getCommunity(target, targetAttr);
+    var sourceCommunity = communities[source];
+    var targetCommunity = communities[target];
 
-    if (!(sourceCommunity in totalWeights))
-      totalWeights[sourceCommunity] = weight;
-    else
-      totalWeights[sourceCommunity] += weight;
-
-    if (!(targetCommunity in totalWeights))
-      totalWeights[targetCommunity] = weight;
-    else
-      totalWeights[targetCommunity] += weight;
+    totalWeights[sourceCommunity] += weight;
+    totalWeights[targetCommunity] += weight;
 
     if (sourceCommunity !== targetCommunity)
       return;
 
-    if (!(sourceCommunity in internalWeights))
-      internalWeights[sourceCommunity] = weight * 2;
-    else
-      internalWeights[sourceCommunity] += weight * 2;
+    internalWeights[sourceCommunity] += weight * 2;
   });
 
   var Q = 0,
       M2 = M * 2;
 
   for (var C in totalWeights)
-    Q += (internalWeights[C] || 0) / M2 - Math.pow(totalWeights[C] / M2, 2);
+    Q += internalWeights[C] / M2 - Math.pow(totalWeights[C] / M2, 2);
 
   return Q;
 }
