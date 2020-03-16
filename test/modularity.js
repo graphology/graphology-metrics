@@ -20,6 +20,33 @@ var UndirectedGraph = Graph.UndirectedGraph,
 // TODO: test different options
 
 /**
+ * Helpers.
+ */
+function fromData(G, nodes, edges) {
+  var g = new G();
+
+  nodes.forEach(function(node) {
+    g.addNode(node[0], {community: node[1]});
+  });
+
+  edges.forEach(function(edge) {
+    var attr = {};
+
+    if (edge.length > 2)
+      attr.weight = edge[2];
+
+    g.mergeEdge(edge[0], edge[1], attr);
+  });
+
+  return g;
+}
+
+function closeTo(A, B) {
+  assert.closeTo(A, B, 0.001);
+}
+
+
+/**
  * Actual unit tests.
  */
 describe('modularity', function() {
@@ -104,6 +131,39 @@ describe('modularity', function() {
 
     assert.strictEqual(modularity(graph), 0);
     assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
+  });
+
+  it('should work properly with a simple case.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [5, 1],
+      [6, 3]
+    ];
+
+    // Undirected case
+    var graph = fromData(UndirectedGraph, nodes, edges);
+
+    closeTo(modularity(graph), 0.2083, 0.001);
+    closeTo(modularity.dense(graph), modularity.sparse(graph));
+
+    // Directed case
+    graph = fromData(DirectedGraph, nodes, edges);
+
+    closeTo(modularity(graph), 0.3265, 0.001);
+    closeTo(modularity.dense(graph), modularity.sparse(graph));
   });
 
   // it('should throw if a node is not in the given partition.', function() {

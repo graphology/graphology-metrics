@@ -11,6 +11,10 @@
  * implementation should also be aligned with Louvain algorithm's definition
  * of the metric.
  *
+ * Note that the current implementation choses to ignore self-loops. It would
+ * be easy to consider them in the computations but I don't think they were
+ * intended to be taken into account by the metric.
+ *
  * Hence, here are the retained formulas:
  *
  * For dense weighted undirected network:
