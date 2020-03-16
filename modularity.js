@@ -81,10 +81,7 @@
  * Sparse directed
  * Q_d = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \frac{\sum_{c\,tot}^{in}\sum_{c\,tot}^{out}}{m^2} \bigg{]}
  */
-
-// TODO: drop obliterator dep
-var defaults = require('lodash/defaultsDeep'),
-    take = require('obliterator/take');
+var defaults = require('lodash/defaultsDeep');
 
 var DEFAULTS = {
   attributes: {
@@ -112,47 +109,67 @@ function createWeightGetter(weighted, weightAttribute) {
   };
 }
 
-function collectCommunities(entries, options) {
-  var i, l, entry;
+function collectForUndirectedDense(graph, options) {
+  var communities = new Array(graph.order),
+      weightedDegrees = new Float64Array(graph.order),
+      M = 0;
 
-  var communities = new Array(entries.length);
+  var ids = {};
 
-  for (i = 0, l = entries.length; i < l; i++) {
-    entry = entries[i];
+  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
 
-    communities[i] = options.communities ?
-      options.communities[entry[0]] :
-      entry[1][options.attributes.community];
-  }
+  // Collecting communities
+  var i = 0;
+  graph.forEachNode(function(node, attr) {
+    ids[node] = i;
+    communities[i++] = options.communities ?
+      options.communities[node] :
+      attr[options.attributes.community];
+  });
 
-  return communities;
+  // Collecting weights
+  graph.forEachUndirectedEdge(function(edge, attr, source, target) {
+    var weight = getWeight(attr);
+
+    M += weight;
+
+    weightedDegrees[ids[source]] += weight;
+    weightedDegrees[ids[target]] += weight;
+  });
+
+  return {
+    getWeight: getWeight,
+    communities: communities,
+    weightedDegrees: weightedDegrees,
+    M: M
+  };
 }
 
 function undirectedDenseModularity(graph, options) {
 
   // TODO: move somewhere upper
-  // TODO: should get weighted degree
   options = defaults({}, options || {}, DEFAULTS);
 
-  var nodeEntries = take(graph.nodeEntries(), graph.order);
+  var result = collectForUndirectedDense(graph, options);
 
-  var communities = collectCommunities(nodeEntries, options);
+  var communities = result.communities,
+      weightedDegrees = result.weightedDegrees;
 
-  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
+  var M = result.M;
 
-  // TODO: should get weighted size
-  var M = graph.size;
+  var nodes = graph.nodes();
 
-  var i, j, l, w, Aij, didj, iEntry, jEntry, edgeAttributes;
+  var i, j, l, w, Aij, didj;
 
   var S = 0;
 
   var M2 = M * 2;
 
   for (i = 0, l = graph.order; i < l; i++) {
-    iEntry = nodeEntries[i];
 
-    S += 0 - (Math.pow(graph.degree(iEntry[0]), 2) / M2);
+    // Diagonal
+    // NOTE: could change something here to handle self loops
+    S += 0 - (Math.pow(weightedDegrees[i], 2) / M2);
 
     // NOTE: it is important to parse the whole matrix here, diagonal and
     // lower part included. A lot of implementation differ here because
@@ -160,17 +177,15 @@ function undirectedDenseModularity(graph, options) {
     for (j = i + 1; j < l; j++) {
 
       // NOTE: Kronecker's delta
-      // NOTE: we could go from O(n * (n - 1)) to O(avg.C^2)
+      // NOTE: we could go from O(n^2) to O(avg.C^2)
       if (communities[i] !== communities[j])
         continue;
 
-      jEntry = nodeEntries[j];
-
-      edgeAttributes = graph.undirectedEdge(iEntry[0], jEntry[0]);
-      w = getWeight(edgeAttributes);
+      edgeAttributes = graph.undirectedEdge(nodes[i], nodes[j]);
+      w = result.getWeight(edgeAttributes);
 
       Aij = w;
-      didj = graph.degree(iEntry[0]) * graph.degree(jEntry[0]);
+      didj = weightedDegrees[i] * weightedDegrees[j];
 
       S += (Aij - (didj / M2)) * 2;
     }
