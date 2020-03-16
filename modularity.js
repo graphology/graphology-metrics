@@ -58,6 +58,14 @@
  * the dense version is mostly here to guarantee the validity of the sparse one.
  * As such it is not used as default.
  *
+ * [Latex]
+ *
+ * Sparse undirected
+ * Q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{2m} - \left(\frac{\sum\nolimits_{c\,tot}}{2m}\right )^2 \bigg{]}
+ *
+ * Sparse directed
+ * Q_d = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \frac{\sum_{c\,tot}^{in}\sum_{c\,tot}^{out}}{m^2} \bigg{]}
+ *
  * [Articles]
  * M. E. J. Newman, « Modularity and community structure in networks »,
  * Proc. Natl. Acad. Sci. USA, vol. 103, no 23,‎ 2006, p. 8577–8582
@@ -72,14 +80,6 @@
  * Nicolas Dugué, Anthony Perez. Directed Louvain: maximizing modularity in
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
- *
- * [Latex]
- *
- * Sparse undirected
- * Q = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{2m} - \left(\frac{\sum\nolimits_{c\,tot}}{2m}\right )^2 \bigg{]}
- *
- * Sparse directed
- * Q_d = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \frac{\sum_{c\,tot}^{in}\sum_{c\,tot}^{out}}{m^2} \bigg{]}
  */
 var defaults = require('lodash/defaultsDeep'),
     isGraph = require('graphology-utils/is-graph'),
@@ -131,6 +131,9 @@ function collectForUndirectedDense(graph, options) {
 
   // Collecting weights
   graph.forEachUndirectedEdge(function(edge, attr, source, target) {
+    if (source === target)
+      return;
+
     var weight = getWeight(attr);
 
     M += weight;
@@ -147,6 +150,47 @@ function collectForUndirectedDense(graph, options) {
   };
 }
 
+function collectForDirectedDense(graph, options) {
+  var communities = new Array(graph.order),
+      weightedInDegrees = new Float64Array(graph.order),
+      weightedOutDegrees = new Float64Array(graph.order),
+      M = 0;
+
+  var ids = {};
+
+  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
+
+  // Collecting communities
+  var i = 0;
+  graph.forEachNode(function(node, attr) {
+    ids[node] = i;
+    communities[i++] = options.communities ?
+      options.communities[node] :
+      attr[options.attributes.community];
+  });
+
+  // Collecting weights
+  graph.forEachDirectedEdge(function(edge, attr, source, target) {
+    if (source === target)
+      return;
+
+    var weight = getWeight(attr);
+
+    M += weight;
+
+    weightedOutDegrees[ids[source]] += weight;
+    weightedInDegrees[ids[target]] += weight;
+  });
+
+  return {
+    getWeight: getWeight,
+    communities: communities,
+    weightedInDegrees: weightedInDegrees,
+    weightedOutDegrees: weightedOutDegrees,
+    M: M
+  };
+}
+
 function undirectedDenseModularity(graph, options) {
   var result = collectForUndirectedDense(graph, options);
 
@@ -157,7 +201,7 @@ function undirectedDenseModularity(graph, options) {
 
   var nodes = graph.nodes();
 
-  var i, j, l, w, Aij, didj;
+  var i, j, l, Aij, didj;
 
   var S = 0;
 
@@ -180,9 +224,8 @@ function undirectedDenseModularity(graph, options) {
         continue;
 
       edgeAttributes = graph.undirectedEdge(nodes[i], nodes[j]);
-      w = result.getWeight(edgeAttributes);
 
-      Aij = w;
+      Aij = result.getWeight(edgeAttributes);
       didj = weightedDegrees[i] * weightedDegrees[j];
 
       // Here we multiply by two to simulate iteration through lower part
@@ -191,6 +234,53 @@ function undirectedDenseModularity(graph, options) {
   }
 
   return S / M2;
+}
+
+function directedDenseModularity(graph, options) {
+  var result = collectForDirectedDense(graph, options);
+
+  var communities = result.communities,
+      weightedInDegrees = result.weightedInDegrees,
+      weightedOutDegrees = result.weightedOutDegrees;
+
+  var M = result.M;
+
+  var nodes = graph.nodes();
+
+  var i, j, l, Aij, didj;
+
+  var S = 0;
+
+  for (i = 0, l = graph.order; i < l; i++) {
+
+    // Diagonal
+    // NOTE: could change something here to handle self loops
+    S += 0 - ((weightedInDegrees[i] * weightedOutDegrees[i]) / M);
+
+    // NOTE: it is important to parse the whole matrix here, diagonal and
+    // lower part included. A lot of implementation differ here because
+    // they process only a part of the matrix
+    for (j = 0; j < l; j++) {
+
+      if (i === j)
+        continue;
+
+      // NOTE: Kronecker's delta
+      // NOTE: we could go from O(n^2) to O(avg.C^2)
+      if (communities[i] !== communities[j])
+        continue;
+
+      edgeAttributes = graph.directedEdge(nodes[i], nodes[j]);
+
+      Aij = result.getWeight(edgeAttributes);
+      didj = weightedInDegrees[i] * weightedOutDegrees[j];
+
+      // Here we multiply by two to simulate iteration through lower part
+      S += Aij - (didj / M);
+    }
+  }
+
+  return S / M;
 }
 
 function collectCommunitesForUndirected(graph, options) {
@@ -235,6 +325,9 @@ function undirectedSparseModularity(graph, options) {
   var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
 
   graph.forEachUndirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
+    if (source === target)
+      return;
+
     var weight = getWeight(edgeAttr);
 
     M += weight;
@@ -278,7 +371,7 @@ function denseModularity(graph, options) {
   options = defaults({}, options || {}, DEFAULTS);
 
   if (trueType === 'directed')
-    throw new Error('not implemented');
+    return directedDenseModularity(graph, options);
 
   return undirectedDenseModularity(graph, options);
 }

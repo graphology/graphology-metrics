@@ -88,7 +88,7 @@ console.log('int1', int[1], 'int2', int[2]);
 console.log('ext1', ext[1], 'ext2', ext[2]);
 console.log('sparse Q = ', SPARSE_Q.toFixed(4));
 console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
-console.log('lib sparse Q = ', lib(g).toFixed(4));
+console.log('lib sparse Q = ', lib.sparse(g).toFixed(4));
 
 // 1/2m ∑ij[Aij - (di.dj / 2m)].∂(ci, cj)
 // ∑c[(∑c-internal / 2m) - (∑c-total / 2m)²]
@@ -165,6 +165,7 @@ console.log('--------------');
 console.log('M = ', M);
 console.log('S = ', S);
 console.log('Q = ', Q.toFixed(4));
+console.log('lib Q = ', lib.dense(d).toFixed(4));
 console.log('tot1', tot[1], 'tot2', tot[2]);
 console.log('totIn1', totIn[1], 'totIn2', totIn[2]);
 console.log('totOut1', totOut[1], 'totOut2', totOut[2]);
