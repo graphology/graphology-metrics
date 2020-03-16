@@ -57,18 +57,13 @@ g.addEdge(3, 4);
 
 var Q = lib.sparse(g);
 console.log('Q  =', Q);
+
 g.setNodeAttribute(3, 'community', 1);
+
 console.log('Q+ =', lib.sparse(g));
 console.log('∆  =', lib.sparse(g) - Q);
 
-// Node = 3
-var dic = 0,
-    di = 3,
-    Ztot = 2,
-    Zin = 1,
-    m = 6;
-
-// Node = 1
+// Variables
 var dic = 3 * 2,
     di = 3,
     Ztot = 9,
