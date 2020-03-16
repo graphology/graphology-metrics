@@ -308,6 +308,7 @@ function sparseModularity(graph, options) {
 
 var modularity = sparseModularity;
 
+modularity.sparse = sparseModularity;
 modularity.dense = denseModularity;
 
 module.exports = modularity;
