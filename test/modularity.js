@@ -347,20 +347,29 @@ describe('modularity', function() {
 
     var graph = fromData(UndirectedGraph, nodes, edges);
 
-    var Q = modularity(graph);
-
+    // Testing null case
     var delta = modularity.undirectedDelta(
-      6, // M
-      3, // ∑ctot
-      3, // di
-      0  // dic
+      graph.size, // M
+      9, // ∑ctot
+      graph.degree(3), // di
+      3  // dic
     );
 
-    graph.setNodeAttribute(3, 'community', 1);
-    console.log(graph);
-    console.log('Q before  =', Q);
-    console.log('Q after   =', modularity(graph));
-    console.log('∆ applied =', Q + delta);
-    console.log('∆q        =', delta);
+    closeTo(delta, 0);
+
+    // Testing normal case
+    // delta = modularity.undirectedDelta(
+    //   graph.size,
+    //   3,
+    //   graph.degree(3),
+    //   1
+    // );
+
+    // graph.setNodeAttribute(3, 'community', 1);
+    // console.log(graph);
+    // console.log('Q before  =', Q);
+    // console.log('Q after   =', modularity(graph));
+    // console.log('∆ applied =', Q + delta);
+    // console.log('∆q        =', delta);
   });
 });
