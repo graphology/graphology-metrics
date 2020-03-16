@@ -450,7 +450,22 @@ function directedSparseModularity(graph, options) {
 }
 
 function undirectedModularityDelta(M, communityTotalWeight, nodeDegree, nodeCommunityDegree) {
+  return (
+    (nodeCommunityDegree / (2 * M)) -
+    (
+      (communityTotalWeight * nodeDegree) / (2 * (M * M))
+    )
+  );
+}
 
+function directedModularityDelta(M, communityTotalInWeight, communityTotalOutWeight, nodeInDegree, nodeOutDegree, nodeCommunityDegree) {
+  return (
+    (nodeCommunityDegree / M) -
+    (
+      ((nodeOutDegree * communityTotalInWeight) + (nodeInDegree * communityTotalOutWeight)) /
+      (M * M)
+    )
+  );
 }
 
 function denseModularity(graph, options) {
@@ -503,5 +518,7 @@ var modularity = sparseModularity;
 
 modularity.sparse = sparseModularity;
 modularity.dense = denseModularity;
+modularity.undirectedDelta = undirectedModularityDelta;
+modularity.directedDelta = directedModularityDelta;
 
 module.exports = modularity;
