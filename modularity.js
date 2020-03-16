@@ -81,7 +81,9 @@
  * Sparse directed
  * Q_d = \sum_{c} \bigg{[} \frac{\sum\nolimits_{c\,in}}{m} - \frac{\sum_{c\,tot}^{in}\sum_{c\,tot}^{out}}{m^2} \bigg{]}
  */
-var defaults = require('lodash/defaultsDeep');
+var defaults = require('lodash/defaultsDeep'),
+    isGraph = require('graphology-utils/is-graph'),
+    inferType = require('graphology-utils/infer-type');
 
 var DEFAULTS = {
   attributes: {
@@ -146,10 +148,6 @@ function collectForUndirectedDense(graph, options) {
 }
 
 function undirectedDenseModularity(graph, options) {
-
-  // TODO: move somewhere upper
-  options = defaults({}, options || {}, DEFAULTS);
-
   var result = collectForUndirectedDense(graph, options);
 
   var communities = result.communities,
@@ -226,8 +224,6 @@ function collectCommunitesForUndirected(graph, options) {
 }
 
 function undirectedSparseModularity(graph, options) {
-  options = defaults({}, options || {}, DEFAULTS);
-
   var result = collectCommunitesForUndirected(graph, options);
 
   var M = 0;
@@ -264,7 +260,54 @@ function undirectedSparseModularity(graph, options) {
   return Q;
 }
 
-module.exports = {
-  undirectedDenseModularity: undirectedDenseModularity,
-  undirectedSparseModularity: undirectedSparseModularity
-};
+function denseModularity(graph, options) {
+  if (!isGraph(graph))
+    throw new Error('graphology-metrics/modularity: given graph is not a valid graphology instance.');
+
+  if (graph.size === 0)
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of an empty graph.');
+
+  if (graph.multi)
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of a multi graph. Cast it to a simple one beforehand.');
+
+  var trueType = inferType(graph);
+
+  if (trueType === 'mixed')
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of a mixed graph.');
+
+  options = defaults({}, options || {}, DEFAULTS);
+
+  if (trueType === 'directed')
+    throw new Error('not implemented');
+
+  return undirectedDenseModularity(graph, options);
+}
+
+function sparseModularity(graph, options) {
+  if (!isGraph(graph))
+    throw new Error('graphology-metrics/modularity: given graph is not a valid graphology instance.');
+
+  if (graph.size === 0)
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of an empty graph.');
+
+  if (graph.multi)
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of a multi graph. Cast it to a simple one beforehand.');
+
+  var trueType = inferType(graph);
+
+  if (trueType === 'mixed')
+    throw new Error('graphology-metrics/modularity: cannot compute modularity of a mixed graph.');
+
+  options = defaults({}, options || {}, DEFAULTS);
+
+  if (trueType === 'directed')
+    throw new Error('not implemented');
+
+  return undirectedSparseModularity(graph, options);
+}
+
+var modularity = sparseModularity;
+
+modularity.dense = denseModularity;
+
+module.exports = modularity;
