@@ -97,6 +97,9 @@
  * Nicolas Dugué, Anthony Perez. Directed Louvain: maximizing modularity in
  * directed networks. [Research Report] Université d’Orléans. 2015. hal-01231784
  * https://hal.archives-ouvertes.fr/hal-01231784
+ *
+ * [ToDo]:
+ *  - Resolution limit.
  */
 var defaults = require('lodash/defaultsDeep'),
     isGraph = require('graphology-utils/is-graph'),
