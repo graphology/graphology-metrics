@@ -322,4 +322,45 @@ describe('modularity', function() {
   it('should handle heavy-sized directed graphs (500 nodes).', function() {
     closeTo(modularity(directed500), 0.408);
   });
+
+  it.skip('should be possible to perform delta computations for the undirected case.', function() {
+    /* eslint no-multi-spaces: 0 */
+    /* eslint no-console: 0 */
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [5, 1],
+      [6, 3]
+    ];
+
+    var graph = fromData(UndirectedGraph, nodes, edges);
+
+    var Q = modularity(graph);
+
+    var delta = modularity.undirectedDelta(
+      6, // M
+      3, // ∑ctot
+      3, // di
+      0  // dic
+    );
+
+    graph.setNodeAttribute(3, 'community', 1);
+    console.log(graph);
+    console.log('Q before  =', Q);
+    console.log('Q after   =', modularity(graph));
+    console.log('∆ applied =', Q + delta);
+    console.log('∆q        =', delta);
+  });
 });
