@@ -62,6 +62,19 @@
  * the dense version is mostly here to guarantee the validity of the sparse one.
  * As such it is not used as default.
  *
+ * For undirected delta computation:
+ * ---------------------------------
+ *
+ * ∆Q = (dic / 2m) - ((∑ctotal * di) / 2m²)
+ *
+ * where:
+ *  - dic is the degree of the node in community c
+ *
+ * For directed delta computation:
+ * -------------------------------
+ *
+ * ∆Qd = (dic / m) - (((douti * ∑cintotal) + (dini * ∑couttotal)) / m²)
+ *
  * [Latex]
  *
  * Sparse undirected
@@ -434,6 +447,10 @@ function directedSparseModularity(graph, options) {
     Q += (internalWeights[C] / M) - (totalInWeights[C] * totalOutWeights[C] / Math.pow(M, 2));
 
   return Q;
+}
+
+function undirectedModularityDelta(M, communityTotalWeight, nodeDegree, nodeCommunityDegree) {
+
 }
 
 function denseModularity(graph, options) {
