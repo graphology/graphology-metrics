@@ -6,45 +6,12 @@
 //     Graph = require('graphology'),
 //     modularity = require('../modularity.js');
 
-// /**
-//  * Test helpers.
-//  */
-// var TYPE = {
-//   UNDIRECTED: 1,
-//   DIRECTED: 2,
-//   MIXED: 3,
-// };
-
-// function parse(dataset, t) {
-//    var graph = new Graph(),
-//       n = dataset.nodes,
-//       e = dataset.edges,
-//       partitioning = {},
-//       i, l;
-
-//   for (i = 0, l = n.length; i < l; i++) {
-//     graph.addNode(n[i].id);
-//     partitioning[n[i].id] = n[i].attributes['Modularity Class'];
-//   }
-
-//   for (i = 0, l = e.length; i < l; i++) {
-//     if (graph.hasEdge(e[i].source, e[i].target))
-//       continue;
-//     if (t === TYPE.DIRECTED || (t === TYPE.MIXED && e[i].attributes.Orientation === 'directed'))
-//       graph.addDirectedEdge(e[i].source, e[i].target);
-//     else
-//       graph.addUndirectedEdge(e[i].source, e[i].target);
-//   }
-
-//   return {graph: graph, partitioning: partitioning};
-// }
-
-// /**
-//  * Datasets.
-//  */
-// var clique3 = parse(require('./datasets/clique3.json'), TYPE.DIRECTED),
-//     directed500 = parse(require('./datasets/directed500.json'), TYPE.DIRECTED),
-//     undirected500 = parse(require('./datasets/undirected500.json'), TYPE.UNDIRECTED);
+/**
+ * Datasets.
+ */
+// var clique3 = Graph.from(require('./datasets/clique3.json'), {type: 'directed'});
+// var directed500 = Graph.from(require('./datasets/directed500.json'), {type: 'directed'});
+// var undirected500 = Graph.from(require('./datasets/undirected500.json'), {type: 'undirected'});
 
 // /**
 //  * Actual unit tests.
