@@ -313,6 +313,39 @@ function collectCommunitesForUndirected(graph, options) {
   };
 }
 
+function collectCommunitesForDirected(graph, options) {
+  var communities = {},
+      totalInWeights = {},
+      totalOutWeights = {},
+      internalWeights = {};
+
+  if (options.communities)
+    communities = options.communities;
+
+  graph.forEachNode(function(node, attr) {
+    var community;
+
+    if (!options.communities) {
+      community = attr[options.attributes.community];
+      communities[node] = community;
+    }
+    else {
+      community = communities[node];
+    }
+
+    totalInWeights[community] = 0;
+    totalOutWeights[community] = 0;
+    internalWeights[community] = 0;
+  });
+
+  return {
+    communities: communities,
+    totalInWeights: totalInWeights,
+    totalOutWeights: totalOutWeights,
+    internalWeights: internalWeights
+  };
+}
+
 function undirectedSparseModularity(graph, options) {
   var result = collectCommunitesForUndirected(graph, options);
 
@@ -347,8 +380,48 @@ function undirectedSparseModularity(graph, options) {
   var Q = 0,
       M2 = M * 2;
 
-  for (var C in totalWeights)
+  for (var C in internalWeights)
     Q += internalWeights[C] / M2 - Math.pow(totalWeights[C] / M2, 2);
+
+  return Q;
+}
+
+function directedSparseModularity(graph, options) {
+  var result = collectCommunitesForDirected(graph, options);
+
+  var M = 0;
+
+  var totalInWeights = result.totalInWeights,
+      totalOutWeights = result.totalOutWeights,
+      internalWeights = result.internalWeights,
+      communities = result.communities;
+
+  var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
+
+  graph.forEachDirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
+    if (source === target)
+      return;
+
+    var weight = getWeight(edgeAttr);
+
+    M += weight;
+
+    var sourceCommunity = communities[source];
+    var targetCommunity = communities[target];
+
+    totalOutWeights[sourceCommunity] += weight;
+    totalInWeights[targetCommunity] += weight;
+
+    if (sourceCommunity !== targetCommunity)
+      return;
+
+    internalWeights[sourceCommunity] += weight;
+  });
+
+  var Q = 0;
+
+  for (var C in internalWeights)
+    Q += (internalWeights[C] / M) - (totalInWeights[C] * totalOutWeights[C] / Math.pow(M, 2));
 
   return Q;
 }
@@ -394,7 +467,7 @@ function sparseModularity(graph, options) {
   options = defaults({}, options || {}, DEFAULTS);
 
   if (trueType === 'directed')
-    throw new Error('not implemented');
+    return directedSparseModularity(graph, options);
 
   return undirectedSparseModularity(graph, options);
 }

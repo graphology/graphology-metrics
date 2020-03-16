@@ -171,6 +171,7 @@ console.log('totIn1', totIn[1], 'totIn2', totIn[2]);
 console.log('totOut1', totOut[1], 'totOut2', totOut[2]);
 console.log('int1', int[1], 'int2', int[2]);
 console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
+console.log('lib sparse Q = ', lib.sparse(d).toFixed(4));
 console.log();
 
 // TODO: test 2 trival case, test connected components and node with no edges
