@@ -306,6 +306,9 @@ function collectCommunitesForUndirected(graph, options) {
       community = communities[node];
     }
 
+    if (typeof community === 'undefined')
+      throw new Error('graphology-metrics/modularity: the "' + node + '" node is not in the partition.');
+
     totalWeights[community] = 0;
     internalWeights[community] = 0;
   });
@@ -336,6 +339,9 @@ function collectCommunitesForDirected(graph, options) {
     else {
       community = communities[node];
     }
+
+    if (typeof community === 'undefined')
+      throw new Error('graphology-metrics/modularity: the "' + node + '" node is not in the partition.');
 
     totalInWeights[community] = 0;
     totalOutWeights[community] = 0;

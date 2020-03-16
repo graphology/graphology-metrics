@@ -174,6 +174,5 @@ console.log('other sparse Q =', OTHER_SPARSE_Q.toFixed(4));
 console.log('lib sparse Q = ', lib.sparse(d).toFixed(4));
 console.log();
 
-// TODO: test 2 trival case, test connected components and node with no edges
-// TODO: also test empty graph
+// NOTE: connected components are correctly handled, empty graph should not be done
 // TODO: align with https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/quality.html

@@ -13,11 +13,9 @@ var UndirectedGraph = Graph.UndirectedGraph,
 /**
  * Datasets.
  */
-// var clique3 = Graph.from(require('./datasets/clique3.json'), {type: 'directed'});
+var clique3 = Graph.from(require('./datasets/clique3.json'), {type: 'directed'});
 // var directed500 = Graph.from(require('./datasets/directed500.json'), {type: 'directed'});
 // var undirected500 = Graph.from(require('./datasets/undirected500.json'), {type: 'undirected'});
-
-// TODO: test different options
 
 /**
  * Helpers.
@@ -44,7 +42,6 @@ function fromData(G, nodes, edges) {
 function closeTo(A, B) {
   assert.closeTo(A, B, 0.001);
 }
-
 
 /**
  * Actual unit tests.
@@ -166,115 +163,160 @@ describe('modularity', function() {
     closeTo(modularity.dense(graph), modularity.sparse(graph));
   });
 
-  // it('should throw if a node is not in the given partition.', function() {
-  //   var graph = new Graph();
-  //   graph.mergeUndirectedEdge(1, 2);
-  //   graph.mergeUndirectedEdge(1, 3);
-  //   graph.mergeUndirectedEdge(2, 3);
+  it('should throw if a node is not in the given partition.', function() {
+    var graph = new UndirectedGraph();
+    graph.mergeEdge(1, 2);
+    graph.mergeEdge(1, 3);
+    graph.mergeEdge(2, 3);
 
-  //   assert.throws(function() {
-  //     modularity(graph, {communities: {1: 0, 2: 0}});
-  //   }, /partition/);
-  // });
+    assert.throws(function() {
+      modularity(graph, {communities: {1: 0, 2: 0}});
+    }, /partition/);
+  });
 
-  // it('should handle unique partitions of cliques.', function() {
-  //   var graph = new Graph();
-  //   graph.mergeUndirectedEdge(1, 2);
-  //   graph.mergeUndirectedEdge(1, 3);
-  //   graph.mergeUndirectedEdge(2, 3);
+  it('should handle unique partitions of cliques.', function() {
+    var graph = new UndirectedGraph();
+    graph.mergeEdge(1, 2);
+    graph.mergeEdge(1, 3);
+    graph.mergeEdge(2, 3);
 
-  //   assert.closeTo(modularity(graph, {communities: {1: 0, 2: 0, 3: 0}}), 0, 0.01);
-  // });
+    closeTo(modularity(graph, {communities: {1: 0, 2: 0, 3: 0}}), 0);
+  });
 
-  // it('should handle tiny weighted graphs (5 nodes).', function() {
-  //   var graph = new Graph();
+  it('should handle tiny weighted graphs (5 nodes).', function() {
 
-  //   graph.mergeUndirectedEdge(1, 2, {weight: 30});
-  //   graph.mergeUndirectedEdge(1, 5);
-  //   graph.mergeUndirectedEdge(2, 3, {weight: 15});
-  //   graph.mergeUndirectedEdge(2, 4, {weight: 10});
-  //   graph.mergeUndirectedEdge(2, 5);
-  //   graph.mergeUndirectedEdge(3, 4, {weight: 5});
-  //   graph.mergeUndirectedEdge(4, 5, {weight: 100});
+    // Undirected case
+    var graph = new UndirectedGraph();
 
-  //   assert.closeTo(modularity(graph, {communities: {1: 0, 2: 0, 3: 0, 4: 1, 5: 1}}), 0.337, 0.01);
-  // });
+    graph.mergeEdge(1, 2, {weight: 30});
+    graph.mergeEdge(1, 5);
+    graph.mergeEdge(2, 3, {weight: 15});
+    graph.mergeEdge(2, 4, {weight: 10});
+    graph.mergeEdge(2, 5);
+    graph.mergeEdge(3, 4, {weight: 5});
+    graph.mergeEdge(4, 5, {weight: 100});
 
-  // it('should be possible to indicate the weight attribute name.', function() {
-  //   var graph = new Graph();
+    closeTo(modularity(graph, {communities: {1: 0, 2: 0, 3: 0, 4: 1, 5: 1}}), 0.337);
 
-  //   graph.mergeUndirectedEdge(1, 2, {customWeight: 30});
-  //   graph.mergeUndirectedEdge(1, 5);
-  //   graph.mergeUndirectedEdge(2, 3, {customWeight: 15});
-  //   graph.mergeUndirectedEdge(2, 4, {customWeight: 10});
-  //   graph.mergeUndirectedEdge(2, 5);
-  //   graph.mergeUndirectedEdge(3, 4, {customWeight: 5});
-  //   graph.mergeUndirectedEdge(4, 5, {customWeight: 100});
+    graph = new DirectedGraph();
 
-  //   var options = {
-  //     attributes: {
-  //       weight: 'customWeight'
-  //     },
-  //     communities: {1: 0, 2: 0, 3: 0, 4: 1, 5: 1}
-  //   };
+    graph.mergeEdge(1, 2, {weight: 30});
+    graph.mergeEdge(1, 5);
+    graph.mergeEdge(2, 3, {weight: 15});
+    graph.mergeEdge(2, 4, {weight: 10});
+    graph.mergeEdge(2, 5);
+    graph.mergeEdge(3, 4, {weight: 5});
+    graph.mergeEdge(4, 5, {weight: 100});
 
-  //   assert.closeTo(modularity(graph, options), 0.337, 0.01);
-  // });
+    closeTo(modularity(graph, {communities: {1: 0, 2: 0, 3: 0, 4: 1, 5: 1}}), 0.342);
+  });
 
-  // it('should be possible to read the communities from the graph', function() {
-  //   var graph = new Graph();
+  it('should be possible to compute the unweighted modularity of a weighted graph.', function() {
+    var communities = {1: 0, 2: 0, 3: 0, 4: 1, 5: 1};
 
-  //   var data = {
-  //     1: {
-  //       community: 0
-  //     },
-  //     2: {
-  //       community: 0
-  //     },
-  //     3: {
-  //       community: 0
-  //     },
-  //     4: {
-  //       community: 1
-  //     },
-  //     5: {
-  //       community: 1
-  //     }
-  //   };
+    var graph = new UndirectedGraph();
 
-  //   for (var node in data)
-  //     graph.addNode(node, data[node]);
+    graph.mergeEdge(1, 2, {weight: 30});
+    graph.mergeEdge(1, 5);
+    graph.mergeEdge(2, 3, {weight: 15});
+    graph.mergeEdge(2, 4, {weight: 10});
+    graph.mergeEdge(2, 5);
+    graph.mergeEdge(3, 4, {weight: 5});
+    graph.mergeEdge(4, 5, {weight: 100});
 
-  //   graph.addUndirectedEdge(1, 2, {weight: 30});
-  //   graph.addUndirectedEdge(1, 5);
-  //   graph.addUndirectedEdge(2, 3, {weight: 15});
-  //   graph.addUndirectedEdge(2, 4, {weight: 10});
-  //   graph.addUndirectedEdge(2, 5);
-  //   graph.addUndirectedEdge(3, 4, {weight: 5});
-  //   graph.addUndirectedEdge(4, 5, {weight: 100});
+    closeTo(modularity(graph, {communities: communities, weighted: false}), -0.081);
 
-  //   assert.closeTo(modularity(graph), 0.337, 0.01);
-  // });
+    var unweighted = new UndirectedGraph();
 
-  // it.skip('should handle tiny directed graphs (5 nodes).', function() {
-  //   var graph = new Graph({type: 'directed'});
+    unweighted.mergeEdge(1, 2);
+    unweighted.mergeEdge(1, 5);
+    unweighted.mergeEdge(2, 3);
+    unweighted.mergeEdge(2, 4);
+    unweighted.mergeEdge(2, 5);
+    unweighted.mergeEdge(3, 4);
+    unweighted.mergeEdge(4, 5);
 
-  //   graph.mergeDirectedEdge(1, 2);
-  //   graph.mergeDirectedEdge(1, 5);
-  //   graph.mergeDirectedEdge(2, 3);
-  //   graph.mergeDirectedEdge(3, 4);
-  //   graph.mergeDirectedEdge(4, 2);
-  //   graph.mergeDirectedEdge(5, 1);
+    assert.strictEqual(
+      modularity(graph, {communities: communities, weighted: false}),
+      modularity(unweighted, {communities: communities})
+    );
+  });
 
-  //   assert.closeTo(modularity(graph, {communities: {1: 0, 5: 0, 2: 1, 3: 1, 4: 1}}), 0.22, 0.01);
-  // });
+  it('should be possible to indicate the weight attribute name.', function() {
+    var graph = new UndirectedGraph();
 
-  // it('should handle tiny undirected graphs (12 nodes).', function() {
-  //   assert.closeTo(modularity(clique3.graph, {communities: clique3.partitioning}), 0.524, 0.01);
-  // });
+    graph.mergeEdge(1, 2, {customWeight: 30});
+    graph.mergeEdge(1, 5);
+    graph.mergeEdge(2, 3, {customWeight: 15});
+    graph.mergeEdge(2, 4, {customWeight: 10});
+    graph.mergeEdge(2, 5);
+    graph.mergeEdge(3, 4, {customWeight: 5});
+    graph.mergeEdge(4, 5, {customWeight: 100});
+
+    var options = {
+      attributes: {
+        weight: 'customWeight'
+      },
+      communities: {1: 0, 2: 0, 3: 0, 4: 1, 5: 1}
+    };
+
+    closeTo(modularity(graph, options), 0.337);
+  });
+
+  it('should be possible to read the communities from the graph', function() {
+    var graph = new UndirectedGraph();
+
+    var data = {
+      1: {
+        community: 0
+      },
+      2: {
+        community: 0
+      },
+      3: {
+        community: 0
+      },
+      4: {
+        community: 1
+      },
+      5: {
+        community: 1
+      }
+    };
+
+    for (var node in data)
+      graph.addNode(node, data[node]);
+
+    graph.addEdge(1, 2, {weight: 30});
+    graph.addEdge(1, 5);
+    graph.addEdge(2, 3, {weight: 15});
+    graph.addEdge(2, 4, {weight: 10});
+    graph.addEdge(2, 5);
+    graph.addEdge(3, 4, {weight: 5});
+    graph.addEdge(4, 5, {weight: 100});
+
+    closeTo(modularity(graph), 0.337);
+  });
+
+  it('should handle tiny directed graphs (5 nodes).', function() {
+    var graph = new DirectedGraph();
+
+    graph.mergeEdge(1, 2);
+    graph.mergeEdge(1, 5);
+    graph.mergeEdge(2, 3);
+    graph.mergeEdge(3, 4);
+    graph.mergeEdge(4, 2);
+    graph.mergeEdge(5, 1);
+
+    closeTo(modularity(graph, {communities: {1: 0, 5: 0, 2: 1, 3: 1, 4: 1}}), 0.333);
+  });
+
+  it('should handle tiny undirected graphs (12 nodes).', function() {
+    closeTo(modularity(clique3), 0.524);
+  });
 
   // it('should handle heavy-sized undirected graphs (500 nodes).', function() {
-  //   assert.closeTo(modularity(undirected500.graph, {communities: undirected500.partitioning}), 0.397, 0.01);
+  //   closeTo(modularity(undirected500), 0.397);
   // });
 
   // it('should handle heavy-sized directed graphs (500 nodes).', function() {
