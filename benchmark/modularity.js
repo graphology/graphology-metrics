@@ -176,3 +176,26 @@ console.log();
 
 // NOTE: connected components are correctly handled, empty graph should not be done
 // TODO: align with https://networkx.github.io/documentation/stable/_modules/networkx/algorithms/community/quality.html
+
+// Node = 3
+// var dic = 0,
+//     di = 3,
+//     Ztot = 3,
+//     Zin = 2,
+//     m = 6;
+
+// Node = 1
+var dic = 1,
+    di = 2,
+    Ztot = 9,
+    Zin = 8,
+    m = 6;
+
+var DQ = dic / (2 * m) - (Ztot * di) / (2 * Math.pow(m, 2));
+
+console.log(DQ);
+
+var DDQ = ( (Zin + dic) / (2 * m) - Math.pow((Ztot + di) / (2 * m), 2) ) -
+          ( Zin / (2 * m) - Math.pow(Ztot / (2 * m), 2) - Math.pow(di / (2 * m), 2));
+
+console.log(DDQ);

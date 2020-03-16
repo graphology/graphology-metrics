@@ -361,7 +361,7 @@ describe('modularity', function() {
     var Q = modularity(graph);
 
     // Testing normal case
-    delta = modularity.undirectedDelta(
+    var delta = modularity.undirectedDelta(
       graph.size,
       3,
       graph.degree(3),
