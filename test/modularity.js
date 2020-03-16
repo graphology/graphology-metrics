@@ -7,7 +7,7 @@ var assert = require('chai').assert,
     modularity = require('../modularity.js');
 
 var UndirectedGraph = Graph.UndirectedGraph,
-    // DirectedGraph = Graph.DirectedGraph,
+    DirectedGraph = Graph.DirectedGraph,
     MultiGraph = Graph.MultiGraph;
 
 /**
@@ -59,7 +59,7 @@ describe('modularity', function() {
 
   it('should work for trivial cases.', function() {
 
-    // Two nodes, different communities
+    // Undirected, two nodes, different communities
     var graph = new UndirectedGraph();
     graph.addNode(1, {community: 1});
     graph.addNode(2, {community: 2});
@@ -68,11 +68,39 @@ describe('modularity', function() {
     assert.strictEqual(modularity(graph), -0.5);
     assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
 
-    // Two nodes, same community
+    // Undirected, two nodes, same community
     graph = new UndirectedGraph();
     graph.addNode(1, {community: 1});
     graph.addNode(2, {community: 1});
     graph.addEdge(1, 2);
+
+    assert.strictEqual(modularity(graph), 0);
+    assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
+
+    // Directed, two nodes, different communities
+    graph = new DirectedGraph();
+    graph.addNode(1, {community: 1});
+    graph.addNode(2, {community: 2});
+    graph.addEdge(1, 2);
+
+    assert.strictEqual(modularity(graph), 0);
+    assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
+
+    // Directed, two nodes, same community
+    graph = new DirectedGraph();
+    graph.addNode(1, {community: 1});
+    graph.addNode(2, {community: 1});
+    graph.addEdge(1, 2);
+
+    assert.strictEqual(modularity(graph), 0);
+    assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
+
+    // Directed, two nodes, same community, mutual edge
+    graph = new DirectedGraph();
+    graph.addNode(1, {community: 1});
+    graph.addNode(2, {community: 1});
+    graph.addEdge(1, 2);
+    graph.addEdge(2, 1);
 
     assert.strictEqual(modularity(graph), 0);
     assert.strictEqual(modularity.dense(graph), modularity.sparse(graph));
