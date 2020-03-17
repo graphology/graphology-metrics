@@ -345,6 +345,7 @@ describe('modularity', function() {
 
     var graph = fromData(UndirectedGraph, nodes, edges);
 
+    // Node = 2
     var delta = modularity.undirectedDelta(
       graph.size,
       3,
@@ -354,6 +355,7 @@ describe('modularity', function() {
 
     closeTo(delta, -1 / 24);
 
+    // Node = 1
     delta = modularity.undirectedDelta(
       graph.size,
       9,
@@ -362,5 +364,52 @@ describe('modularity', function() {
     );
 
     closeTo(delta, -1 / 6);
+  });
+
+  it('should be possible to perform delta computations for the directed case.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [5, 1],
+      [6, 3]
+    ];
+
+    var graph = fromData(DirectedGraph, nodes, edges);
+
+    // Node = 2
+    var delta = modularity.directedDelta(
+      graph.size,
+      2,
+      2,
+      2,
+      1,
+      2
+    );
+
+    closeTo(delta, 8 / 49);
+
+    // Node = 1
+    delta = modularity.directedDelta(
+      graph.size,
+      5,
+      4,
+      1,
+      2,
+      1
+    );
+
+    closeTo(delta, -1 / 7);
   });
 });
