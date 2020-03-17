@@ -1,6 +1,6 @@
 /**
  * Graphology Degree
- * ===================
+ * ==================
  *
  * Functions used to compute the degree of each node of a given graph.
  */

@@ -31,6 +31,10 @@ npm install graphology-metrics
 
 * [Modalities](#modalities)
 
+*Layout quality metrics*
+
+* [Edge Uniformity](#edge-uniformity)
+
 ### Density
 
 Computes the density of the given graph.
@@ -362,3 +366,14 @@ const info = modalities(graph, ['type', 'lang']);
 
 * **graph** *Graph*: target graph.
 * **attribute** *string|array*: target categorical attribute or array of categorical attributes.
+
+### Edge Uniformity
+
+Computes the edge uniformity layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Edge uniformity is the normalized standard deviation of edge length of the graph. Lower values should be synonym of better layout according to this particular metric.
+
+```js
+import edgeUniformity from 'graphology-metrics/layout-quality/edge-uniformity';
+
+edgeUniformity(graph);
+>>> ~1.132
+```
