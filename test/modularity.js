@@ -323,9 +323,7 @@ describe('modularity', function() {
     closeTo(modularity(directed500), 0.408);
   });
 
-  it.skip('should be possible to perform delta computations for the undirected case.', function() {
-    /* eslint no-multi-spaces: 0 */
-    /* eslint no-console: 0 */
+  it('should be possible to perform delta computations for the undirected case.', function() {
     var nodes = [
       [1, 1], // id, community
       [2, 2],
@@ -347,32 +345,22 @@ describe('modularity', function() {
 
     var graph = fromData(UndirectedGraph, nodes, edges);
 
-    // Testing null case
-    // NOTE: formula cannot work for null case
-    // var delta = modularity.undirectedDelta(
-    //   graph.size, // M
-    //   9, // ∑ctot
-    //   graph.degree(3), // di
-    //   3  // dic
-    // );
-
-    // closeTo(delta, 0);
-
-    var Q = modularity(graph);
-
-    // Testing normal case
     var delta = modularity.undirectedDelta(
       graph.size,
       3,
-      graph.degree(3),
-      0
+      3,
+      1
     );
 
-    graph.setNodeAttribute(3, 'community', 1);
-    console.log(graph);
-    console.log('Q before  =', Q);
-    console.log('Q after   =', modularity(graph));
-    console.log('∆ applied =', Q + delta);
-    console.log('∆q        =', delta);
+    closeTo(delta, -1 / 24);
+
+    delta = modularity.undirectedDelta(
+      graph.size,
+      9,
+      2,
+      1
+    );
+
+    closeTo(delta, -1 / 6);
   });
 });

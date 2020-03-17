@@ -109,7 +109,7 @@
  * [Links]:
  * https://math.stackexchange.com/questions/2637469/where-does-the-second-formula-of-modularity-comes-from-in-the-louvain-paper-the
  * https://www.quora.com/How-is-the-formula-for-Louvain-modularity-change-derived
- * https://github.com/gephi/gephi/blob/master/modules/StatisticsPlugin/src/main/java/org/gephi/statistics/plugin/Modularity.java#L712
+ * https://github.com/gephi/gephi/blob/master/modules/StatisticsPlugin/src/main/java/org/gephi/statistics/plugin/Modularity.java
  */
 var defaults = require('lodash/defaultsDeep'),
     isGraph = require('graphology-utils/is-graph'),

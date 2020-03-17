@@ -96,7 +96,7 @@ extent.edgeExtent(graph, 'weight');
 
 ### Modularity
 
-Computes the modularity, given the graph and a partitioning
+Computes the modularity, given the graph and a node partition. It works on both directed & undirected networks and will return the relevant modularity.
 
 ```js
 import {modularity} from 'graphology-metrics';
@@ -106,7 +106,7 @@ import modularity from 'graphology-metrics/modularity';
 // Simplest way
 const Q = modularity(graph);
 
-// If community mapping is external to the graph
+// If the partition is not given by node attributes
 const Q = modularity(graph, {
   communities: {'1': 0, '2': 0, '3': 1, '4': 1, '5': 1}
 });

@@ -64,10 +64,10 @@ console.log('Q+ =', lib.sparse(g));
 console.log('∆  =', lib.sparse(g) - Q);
 
 // Variables
-var dic = 3 * 2,
-    di = 3,
-    Ztot = 9,
-    Zin = 6,
+var dic = 0,
+    di = 1,
+    Ztot = 3,
+    Zin = 2,
     m = 6;
 
 var DQ = dic / (2 * m) - (Ztot * di) / (2 * Math.pow(m, 2));
