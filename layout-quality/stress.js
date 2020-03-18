@@ -32,6 +32,10 @@ module.exports = function stress(graph) {
       entries = new Array(graph.order),
       i = 0;
 
+  // We choose an arbitrary large distance for when two nodes cannot be
+  // connected because they belong to different connected components
+  // and because we cannot deal with Infinity in our computations
+  // This is what most papers recommend anyway
   var maxDistance = graph.order * 4;
 
   graph.forEachNode(function(node, attr) {

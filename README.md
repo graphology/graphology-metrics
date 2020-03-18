@@ -400,6 +400,10 @@ neighborhoodPreservation(graph);
 
 Computes the "stress" layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Stress is the sum of normalized delta between node topology distances and their layout space distances. Lower values should be synonym of better layout according to this particular metric.
 
+Note that this metric does not work very well when the graph has multiple connected components.
+
+Note also that this metric traverses any given graph as an undirected one.
+
 Runs in `O(N^2)`.
 
 ```js
