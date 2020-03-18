@@ -34,6 +34,7 @@ npm install graphology-metrics
 *Layout quality metrics*
 
 * [Edge Uniformity](#edge-uniformity)
+* [Stress](#stress)
 
 ### Density
 
@@ -376,4 +377,15 @@ import edgeUniformity from 'graphology-metrics/layout-quality/edge-uniformity';
 
 edgeUniformity(graph);
 >>> ~1.132
+```
+
+### Stress
+
+Computes the "stress" layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Stress is the sum of normalized delta between node topology distances and their layout space distances. Lower values should be synonym of better layout according to this particular metric.
+
+```js
+import stress from 'graphology-metrics/layout-quality/stress';
+
+stress(graph);
+// >>> ~24510.2914
 ```
