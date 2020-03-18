@@ -34,6 +34,7 @@ npm install graphology-metrics
 *Layout quality metrics*
 
 * [Edge Uniformity](#edge-uniformity)
+* [Neighborhood Preservation](#neighborhood-preservation)
 * [Stress](#stress)
 
 ### Density
@@ -380,6 +381,20 @@ import edgeUniformity from 'graphology-metrics/layout-quality/edge-uniformity';
 edgeUniformity(graph);
 >>> ~1.132
 ```
+
+### Neighborhood preservation
+
+Computes the "neighborhood preservation" layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Neighborhood preservation is the average proportion of node neighborhood being the same both in the graph's topology and its 2d layout space. The metric is therefore comprised between `0` and `1`,  `1` being the best, meaning that every node keeps its neighborhood perfectly intact within the layout space.
+
+Runs in approximately `O(N * log(N))`.
+
+```js
+import neighborhoodPreservation from 'graphology-metrics/layout-quality/neighborhood-preservation';
+
+neighborhoodPreservation(graph);
+// >>> 0.456
+```
+
 
 ### Stress
 

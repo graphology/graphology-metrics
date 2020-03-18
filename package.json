@@ -61,6 +61,7 @@
       ]
     },
     "globals": {
+      "Set": true,
       "Float64Array": true
     }
   },
@@ -68,6 +69,7 @@
     "graphology-shortest-path": "^1.3.0",
     "graphology-types": "^0.16.0",
     "graphology-utils": "^1.6.1",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "mnemonist": "^0.34.0"
   }
 }
