@@ -372,6 +372,8 @@ const info = modalities(graph, ['type', 'lang']);
 
 Computes the edge uniformity layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Edge uniformity is the normalized standard deviation of edge length of the graph. Lower values should be synonym of better layout according to this particular metric.
 
+Runs in `O(E)`.
+
 ```js
 import edgeUniformity from 'graphology-metrics/layout-quality/edge-uniformity';
 
@@ -382,6 +384,8 @@ edgeUniformity(graph);
 ### Stress
 
 Computes the "stress" layout quality metric from the given graph having `x` and `y` positions attached to its nodes. Stress is the sum of normalized delta between node topology distances and their layout space distances. Lower values should be synonym of better layout according to this particular metric.
+
+Runs in `O(N^2)`.
 
 ```js
 import stress from 'graphology-metrics/layout-quality/stress';
