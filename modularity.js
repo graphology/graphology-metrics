@@ -15,6 +15,10 @@
  * be easy to consider them in the computations but I don't think they were
  * intended to be taken into account by the metric.
  *
+ * Regarding the directed version, one has to understand that the undirected
+ * version's is basically considering the graph as a directed one where all
+ * edges would be mutual.
+ *
  * Hence, here are the retained formulas:
  *
  * For dense weighted undirected network:
