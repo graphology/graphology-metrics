@@ -68,5 +68,5 @@ var GQ = dic - (di * Ztot) / m;
 // currentResolution * edgesTo - (nodeWeight * weightSum) / (2.0 * theStructure.graphWeightSum);
 
 console.log('DDQ =', DDQ.toFixed(4));
-console.log('GQ =', GQ.toFixed(4) / (2 * m));
+console.log('GQ =', (GQ / (2 * m)).toFixed(4));
 console.log('lib =', lib.undirectedDelta(m, Ztot, di, dic, 1).toFixed(4));
