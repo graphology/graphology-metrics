@@ -72,9 +72,10 @@ var dic = 0,
 
 var DQ = dic / (2 * m) - (Ztot * di) / (2 * Math.pow(m, 2));
 
-console.log(DQ.toFixed(4));
+console.log('DQ =', DQ.toFixed(4));
 
 var DDQ = ( (Zin + dic) / (2 * m) - Math.pow((Ztot + di) / (2 * m), 2) ) -
           ( Zin / (2 * m) - Math.pow(Ztot / (2 * m), 2) - Math.pow(di / (2 * m), 2));
 
-console.log(DDQ.toFixed(4));
+console.log('DDQ =', DDQ.toFixed(4));
+console.log('lib =', lib.undirectedDelta(m, Ztot, di, dic, 1).toFixed(4));
