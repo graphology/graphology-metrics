@@ -63,9 +63,8 @@ console.log('DQ =', DQ.toFixed(4));
 var DDQ = ( (Zin + dic) / (2 * m) - Math.pow((Ztot + di) / (2 * m), 2) ) -
           ( Zin / (2 * m) - Math.pow(Ztot / (2 * m), 2) - Math.pow(di / (2 * m), 2));
 
+// NOTE: Gephi version is / 2m and not / m which is an error
 var GQ = dic - (di * Ztot) / m;
-
-// currentResolution * edgesTo - (nodeWeight * weightSum) / (2.0 * theStructure.graphWeightSum);
 
 console.log('DDQ =', DDQ.toFixed(4));
 console.log('GQ =', (GQ / (2 * m)).toFixed(4));
