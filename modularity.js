@@ -79,6 +79,20 @@
  *
  * ∆Qd = (dic / m) - (((douti * ∑cintotal) + (dini * ∑couttotal)) / m²)
  *
+ * Gephi's version of undirected delta computation:
+ * ------------------------------------------------
+ *
+ * ∆Qgephi = dic - (di * Ztot) / 2m
+ *
+ * Note that the above formula is erroneous and should really be:
+ *
+ * ∆Qgephi = dic - (di * Ztot) / m
+ *
+ * because then: ∆Qgephi = ∆Q * 2m
+ *
+ * It is used because it is faster to compute. Since Gephi's error is only by
+ * a constant factor, it does not make the result incorrect.
+ *
  * [Latex]
  *
  * Sparse undirected
