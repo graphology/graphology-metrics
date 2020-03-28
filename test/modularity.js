@@ -345,7 +345,7 @@ describe('modularity', function() {
 
     var graph = fromData(UndirectedGraph, nodes, edges);
 
-    // Node = 2
+    // Node = 2 to other community
     var delta = modularity.undirectedDelta(
       graph.size,
       3,
@@ -355,7 +355,7 @@ describe('modularity', function() {
 
     closeTo(delta, -1 / 24);
 
-    // Node = 1
+    // Node = 1 to other community
     delta = modularity.undirectedDelta(
       graph.size,
       9,
@@ -388,19 +388,19 @@ describe('modularity', function() {
 
     var graph = fromData(DirectedGraph, nodes, edges);
 
-    // Node = 2
+    // Node = 2 to other community
     var delta = modularity.directedDelta(
       graph.size,
       2,
-      2,
+      3,
       2,
       1,
-      2
+      1
     );
 
-    closeTo(delta, 8 / 49);
+    closeTo(delta, -1 / 49);
 
-    // Node = 1
+    // Node = 1 to other community
     delta = modularity.directedDelta(
       graph.size,
       5,
