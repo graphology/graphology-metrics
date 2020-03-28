@@ -466,6 +466,8 @@ function directedSparseModularity(graph, options) {
   return Q;
 }
 
+// NOTE: the formula is a bit unclear here but nodeCommunityDegree should be
+// given as the edges count * 2
 function undirectedModularityDelta(M, communityTotalWeight, nodeDegree, nodeCommunityDegree) {
   return (
     (nodeCommunityDegree / (2 * M)) -
