@@ -50,6 +50,7 @@
     "graphology": "^0.16.0",
     "graphology-generators": "^0.10.1",
     "graphology-layout": "^0.2.0",
+    "graphology-operators": "^1.1.0",
     "mocha": "^7.0.1"
   },
   "eslintConfig": {

@@ -4,7 +4,8 @@
  */
 var assert = require('chai').assert,
     Graph = require('graphology'),
-    modularity = require('../modularity.js');
+    modularity = require('../modularity.js'),
+    toDirected = require('graphology-operators/to-directed');
 
 var UndirectedGraph = Graph.UndirectedGraph,
     DirectedGraph = Graph.DirectedGraph,
@@ -321,6 +322,34 @@ describe('modularity', function() {
 
   it('should handle heavy-sized directed graphs (500 nodes).', function() {
     closeTo(modularity(directed500), 0.408);
+  });
+
+  it('undirected modularity should be the same as equivalent directed mutual one.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [6, 3]
+    ];
+
+    var undirectedGraph = fromData(UndirectedGraph, nodes, edges);
+    var directedGraph = toDirected(undirectedGraph);
+
+    closeTo(
+      modularity(undirectedGraph),
+      modularity(directedGraph)
+    );
   });
 
   it('should be possible to perform delta computations for the undirected case.', function() {
