@@ -23,6 +23,9 @@
  * undirected and mutual case. Indeed, in both cases the modularity of a
  * k-clique with one loop and minus one internal edge should be equal.
  *
+ * This also means that, as with the naive density formula regarding loops,
+ * one should increment M when considering a loop.
+ *
  * Hence, here are the retained formulas:
  *
  * For dense weighted undirected network:
