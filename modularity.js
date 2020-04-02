@@ -19,6 +19,14 @@
  * version's is basically considering the graph as a directed one where all
  * edges would be mutual.
  *
+ * There is one exception to this, though: self loops. To conform with density's
+ * definition, as used in modularity's one, and to keep true to the matrix
+ * formulation of modularity, one has to note that self-loops only count once
+ * in both the undirected and directed cases. This means that a k-clique with
+ * one node having a self-loop will not have the same modularity in the
+ * undirected and mutual case. Indeed, in both cases the modularity of a
+ * k-clique with one loop and minus one internal edge should be equal.
+ *
  * Hence, here are the retained formulas:
  *
  * For dense weighted undirected network:
