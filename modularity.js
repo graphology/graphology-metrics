@@ -24,7 +24,9 @@
  * k-clique with one loop and minus one internal edge should be equal.
  *
  * This also means that, as with the naive density formula regarding loops,
- * one should increment M when considering a loop.
+ * one should increment M when considering a loop. Also, to remain coherent
+ * in this regard, degree should not be multiplied by two because of the loop
+ * else it will have too much importance regarding the considered proportions.
  *
  * Hence, here are the retained formulas:
  *
