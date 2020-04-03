@@ -21,6 +21,16 @@ var undirected500 = Graph.from(require('./datasets/undirected500.json'), {type: 
 /**
  * Helpers.
  */
+function cleanLoops(G) {
+  G.forEachEdge(function(edge, _, source, target) {
+    if (source === target)
+      G.dropEdge(edge);
+  });
+}
+
+cleanLoops(directed500);
+cleanLoops(undirected500);
+
 function fromData(G, nodes, edges) {
   var g = new G();
 
@@ -465,6 +475,7 @@ describe('modularity', function() {
     graph.addEdge(1, 1);
 
     closeTo(modularity.dense(graph), 0.3163);
+    closeTo(modularity.sparse(graph), 0.3163);
   });
 
   it('should work with self-loops in the directed case.', function() {
@@ -491,5 +502,6 @@ describe('modularity', function() {
     graph.addEdge(1, 1);
 
     closeTo(modularity.dense(graph), 0.375);
+    closeTo(modularity.sparse(graph), 0.375);
   });
 });

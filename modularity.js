@@ -137,6 +137,7 @@
  * https://math.stackexchange.com/questions/2637469/where-does-the-second-formula-of-modularity-comes-from-in-the-louvain-paper-the
  * https://www.quora.com/How-is-the-formula-for-Louvain-modularity-change-derived
  * https://github.com/gephi/gephi/blob/master/modules/StatisticsPlugin/src/main/java/org/gephi/statistics/plugin/Modularity.java
+ * https://github.com/igraph/igraph/blob/eca5e809aab1aa5d4eca1e381389bcde9cf10490/src/community.c#L906
  */
 var defaults = require('lodash/defaultsDeep'),
     isGraph = require('graphology-utils/is-graph'),
@@ -410,9 +411,6 @@ function undirectedSparseModularity(graph, options) {
   var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
 
   graph.forEachUndirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
-    if (source === target)
-      return;
-
     var weight = getWeight(edgeAttr);
 
     M += weight;
@@ -451,9 +449,6 @@ function directedSparseModularity(graph, options) {
   var getWeight = createWeightGetter(options.weighted, options.attributes.weight);
 
   graph.forEachDirectedEdge(function(edge, edgeAttr, source, target, sourceAttr, targetAttr) {
-    if (source === target)
-      return;
-
     var weight = getWeight(edgeAttr);
 
     M += weight;
