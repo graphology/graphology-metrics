@@ -188,15 +188,15 @@ function collectForUndirectedDense(graph, options) {
 
   // Collecting weights
   graph.forEachUndirectedEdge(function(edge, attr, source, target) {
-    if (source === target)
-      return;
-
     var weight = getWeight(attr);
 
     M += weight;
 
     weightedDegrees[ids[source]] += weight;
-    weightedDegrees[ids[target]] += weight;
+
+    // NOTE: we double degree only if we don't have a loop
+    if (source !== target)
+      weightedDegrees[ids[target]] += weight;
   });
 
   return {
@@ -228,9 +228,6 @@ function collectForDirectedDense(graph, options) {
 
   // Collecting weights
   graph.forEachDirectedEdge(function(edge, attr, source, target) {
-    if (source === target)
-      return;
-
     var weight = getWeight(attr);
 
     M += weight;
@@ -266,14 +263,10 @@ function undirectedDenseModularity(graph, options) {
 
   for (i = 0, l = graph.order; i < l; i++) {
 
-    // Diagonal
-    // NOTE: could change something here to handle self loops
-    S += 0 - (Math.pow(weightedDegrees[i], 2) / M2);
-
     // NOTE: it is important to parse the whole matrix here, diagonal and
     // lower part included. A lot of implementation differ here because
     // they process only a part of the matrix
-    for (j = i + 1; j < l; j++) {
+    for (j = 0; j < l; j++) {
 
       // NOTE: Kronecker's delta
       // NOTE: we could go from O(n^2) to O(avg.C^2)
@@ -285,8 +278,11 @@ function undirectedDenseModularity(graph, options) {
       Aij = result.getWeight(edgeAttributes);
       didj = weightedDegrees[i] * weightedDegrees[j];
 
-      // Here we multiply by two to simulate iteration through lower part
-      S += (Aij - (didj / M2)) * 2;
+      // We add twice if we have a self loop
+      if (i === j && typeof edgeAttributes !== 'undefined')
+        S += (Aij - (didj / M2)) * 2;
+      else
+        S += (Aij - (didj / M2));
     }
   }
 
@@ -310,17 +306,10 @@ function directedDenseModularity(graph, options) {
 
   for (i = 0, l = graph.order; i < l; i++) {
 
-    // Diagonal
-    // NOTE: could change something here to handle self loops
-    S += 0 - ((weightedInDegrees[i] * weightedOutDegrees[i]) / M);
-
     // NOTE: it is important to parse the whole matrix here, diagonal and
     // lower part included. A lot of implementation differ here because
     // they process only a part of the matrix
     for (j = 0; j < l; j++) {
-
-      if (i === j)
-        continue;
 
       // NOTE: Kronecker's delta
       // NOTE: we could go from O(n^2) to O(avg.C^2)

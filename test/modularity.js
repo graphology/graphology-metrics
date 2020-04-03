@@ -441,4 +441,55 @@ describe('modularity', function() {
 
     closeTo(delta, -1 / 7);
   });
+
+  it('should work with self-loops in the undirected case.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [6, 3]
+    ];
+
+    var graph = fromData(UndirectedGraph, nodes, edges);
+    graph.addEdge(1, 1);
+
+    closeTo(modularity.dense(graph), 0.3163);
+  });
+
+  it('should work with self-loops in the directed case.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [5, 1],
+      [6, 3]
+    ];
+
+    var graph = fromData(DirectedGraph, nodes, edges);
+    graph.addEdge(1, 1);
+
+    closeTo(modularity.dense(graph), 0.375);
+  });
 });
