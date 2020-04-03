@@ -504,4 +504,54 @@ describe('modularity', function() {
     closeTo(modularity.dense(graph), 0.375);
     closeTo(modularity.sparse(graph), 0.375);
   });
+
+  it('the k-clique equivalency should hold.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [6, 3]
+    ];
+
+    var undirectedGraph = fromData(UndirectedGraph, nodes, edges);
+    var mutualGraph = toDirected(undirectedGraph);
+
+    // Modularity with community losing an edge and gaining a loop should
+    // be equivalent
+    var UQ = modularity(undirectedGraph);
+    var DQ = modularity(mutualGraph);
+
+    closeTo(UQ, DQ);
+
+    undirectedGraph.dropEdge(1, 5);
+    undirectedGraph.addEdge(1, 1);
+
+    closeTo(UQ, modularity(undirectedGraph));
+
+    mutualGraph.dropEdge(1, 5);
+    mutualGraph.addEdge(1, 1);
+
+    closeTo(DQ, modularity(mutualGraph));
+
+    // Modularity of mutual graph with community losing an edge and gaining
+    // a loop should be the same as the undirected one
+    undirectedGraph = fromData(UndirectedGraph, nodes, edges);
+    mutualGraph = toDirected(undirectedGraph);
+
+    mutualGraph.dropEdge(1, 5);
+    mutualGraph.addEdge(1, 1);
+
+    closeTo(modularity(undirectedGraph), modularity(mutualGraph));
+  });
 });
