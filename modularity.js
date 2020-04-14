@@ -154,6 +154,7 @@ var DEFAULTS = {
     weight: 'weight'
   },
   communities: null,
+  resolution: 1,
   weighted: true
 };
 
@@ -252,6 +253,8 @@ function collectForDirectedDense(graph, options) {
 }
 
 function undirectedDenseModularity(graph, options) {
+  var resolution = options.resolution;
+
   var result = collectForUndirectedDense(graph, options);
 
   var communities = result.communities,
@@ -286,9 +289,9 @@ function undirectedDenseModularity(graph, options) {
 
       // We add twice if we have a self loop
       if (i === j && typeof edgeAttributes !== 'undefined')
-        S += (Aij - (didj / M2)) * 2;
+        S += (Aij - (didj / M2) * resolution) * 2;
       else
-        S += (Aij - (didj / M2));
+        S += (Aij - (didj / M2) * resolution);
     }
   }
 
@@ -296,6 +299,8 @@ function undirectedDenseModularity(graph, options) {
 }
 
 function directedDenseModularity(graph, options) {
+  var resolution = options.resolution;
+
   var result = collectForDirectedDense(graph, options);
 
   var communities = result.communities,
@@ -328,7 +333,7 @@ function directedDenseModularity(graph, options) {
       didj = weightedInDegrees[i] * weightedOutDegrees[j];
 
       // Here we multiply by two to simulate iteration through lower part
-      S += Aij - (didj / M);
+      S += Aij - (didj / M) * resolution;
     }
   }
 

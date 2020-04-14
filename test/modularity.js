@@ -554,4 +554,35 @@ describe('modularity', function() {
 
     closeTo(modularity(undirectedGraph), modularity(mutualGraph));
   });
+
+  it('should work with resolution.', function() {
+    var nodes = [
+      [1, 1], // id, community
+      [2, 2],
+      [3, 2],
+      [4, 2],
+      [5, 1],
+      [6, 2]
+    ];
+
+    var edges = [
+      [1, 2], // source, target
+      [1, 5],
+      [2, 3],
+      [3, 4],
+      [4, 2],
+      [5, 1],
+      [6, 3]
+    ];
+
+    var undirectedGraph = fromData(UndirectedGraph, nodes, edges);
+
+    closeTo(modularity.dense(undirectedGraph, {resolution: 0.5}), 0.5208);
+    closeTo(modularity.dense(undirectedGraph, {resolution: 2}), -0.4166);
+
+    var directedGraph = fromData(DirectedGraph, nodes, edges);
+
+    closeTo(modularity.dense(directedGraph, {resolution: 0.5}), 0.5918);
+    closeTo(modularity.dense(directedGraph, {resolution: 2}), -0.2040);
+  });
 });
