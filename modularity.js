@@ -410,6 +410,8 @@ function collectCommunitesForDirected(graph, options) {
 }
 
 function undirectedSparseModularity(graph, options) {
+  var resolution = options.resolution;
+
   var result = collectCommunitesForUndirected(graph, options);
 
   var M = 0;
@@ -441,12 +443,14 @@ function undirectedSparseModularity(graph, options) {
       M2 = M * 2;
 
   for (var C in internalWeights)
-    Q += internalWeights[C] / M2 - Math.pow(totalWeights[C] / M2, 2);
+    Q += internalWeights[C] / M2 - Math.pow(totalWeights[C] / M2, 2) * resolution;
 
   return Q;
 }
 
 function directedSparseModularity(graph, options) {
+  var resolution = options.resolution;
+
   var result = collectCommunitesForDirected(graph, options);
 
   var M = 0;
@@ -478,7 +482,7 @@ function directedSparseModularity(graph, options) {
   var Q = 0;
 
   for (var C in internalWeights)
-    Q += (internalWeights[C] / M) - (totalInWeights[C] * totalOutWeights[C] / Math.pow(M, 2));
+    Q += (internalWeights[C] / M) - (totalInWeights[C] * totalOutWeights[C] / Math.pow(M, 2)) * resolution;
 
   return Q;
 }

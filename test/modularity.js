@@ -580,9 +580,27 @@ describe('modularity', function() {
     closeTo(modularity.dense(undirectedGraph, {resolution: 0.5}), 0.5208);
     closeTo(modularity.dense(undirectedGraph, {resolution: 2}), -0.4166);
 
+    closeTo(
+      modularity.dense(undirectedGraph, {resolution: 0.5}),
+      modularity.sparse(undirectedGraph, {resolution: 0.5})
+    );
+    closeTo(
+      modularity.dense(undirectedGraph, {resolution: 2}),
+      modularity.sparse(undirectedGraph, {resolution: 2})
+    );
+
     var directedGraph = fromData(DirectedGraph, nodes, edges);
 
     closeTo(modularity.dense(directedGraph, {resolution: 0.5}), 0.5918);
     closeTo(modularity.dense(directedGraph, {resolution: 2}), -0.2040);
+
+    closeTo(
+      modularity.dense(directedGraph, {resolution: 0.5}),
+      modularity.sparse(directedGraph, {resolution: 0.5})
+    );
+    closeTo(
+      modularity.dense(directedGraph, {resolution: 2}),
+      modularity.sparse(directedGraph, {resolution: 2})
+    );
   });
 });
