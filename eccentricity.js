@@ -8,16 +8,13 @@ var isGraph = require('graphology-utils/is-graph');
 var shortestPath = require('graphology-shortest-path');
 var Graph = require('graphology');
 
-module.exports = function eccentricity(graph) {
+module.exports = function eccentricity(graph, mynode) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/degree: given graph is not a valid graphology instance.');
 
     var nodes = new Array(graph.order),
     entries = new Array(graph.order),
-    i = 0, j;
-
-  var mymap = {}
-  var nopath = false
+    i = 0, j, ecc = 0;
 
   graph.forEachNode(function(node, attr) {
     nodes[i] = node;
@@ -25,25 +22,26 @@ module.exports = function eccentricity(graph) {
   });
 
   for (i = 0, l = graph.order; i < l; i++) {
-    var path = shortestPath(graph, nodes[i]);
-    var tab = new Array();
+    if (nodes[i] == mynode) {
+      var path = shortestPath(graph, nodes[i])
+      var lg = path[i+1].length - 1;
 
-    for (j = 1; j <= l; j++){
-      if (path[j]) {
-        var ecc = tab.push(path[j].length - 1)
+      if (lg > ecc) {
+        ecc = lg
       }
-      else {
-        nopath = true
-      }
-    }
-
-    if (nopath) {
-      mymap[nodes[i]] = -Infinity;
-    }
-    else {
-      mymap[nodes[i]] = Math.max(...tab);
     }
   }
 
-  return mymap;
+  var ecc = 0
+
+  for (j = 1; j <= l; j++) {
+    if (path[j]) {
+      if (path[j].length - 1 > ecc)
+        ecc = path[j].length - 1;
+    }
+    else
+      ecc = Infinity;
+  }
+
+  return ecc;
 }

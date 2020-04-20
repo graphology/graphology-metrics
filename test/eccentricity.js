@@ -36,12 +36,12 @@ function createGraph(type) {
 }
 
 describe('eccentricity', function() {
-  it('should calculate all eccentricities in an undirected graph.', function() {
-    var result = eccentricity(createGraph('undirected'));
-    assert.deepEqual(result, {1: -Infinity, 2: -Infinity, 3: -Infinity, 4: -Infinity, 5: -Infinity, 6: -Infinity});
+  it('should calculate the eccentricity of the given node in an undirected graph.', function() {
+    var result = eccentricity(createGraph('undirected'), 3);
+    assert.deepEqual(result, Infinity);
   });
-  it('should calculate all eccentricities in a directed graph.', function() {
-    var result = eccentricity(createGraph('directed'));
-    assert.deepEqual(result, {1: 3, 2: 2, 3: 4, 4: -Infinity, 5: -Infinity, 6: - Infinity});
+  it('should calculate the eccentricity of the given node in a directed graph.', function() {
+    var result = eccentricity(createGraph('directed'), 3);
+    assert.deepEqual(result, 4);
   });
 });
