@@ -14,25 +14,18 @@ module.exports = function eccentricity(graph, mynode) {
 
   var path = {}, ecc = -Infinity;
 
-  graph.forEachNode(function(node, attr) {
+  lg = singleSourceLength(graph, mynode);
+  var l = Object.keys(lg).length
 
-    if (node == mynode){
-      lg = singleSourceLength(graph, node);
+  for (var i = 1; i <= l; i++) {
+    if (lg[i] > ecc) {
+      ecc = lg[i];
+    };
+  };
 
-      for (i = 1, l = graph.order; i <= l; i++) {
-        if (lg[i] != null) {
-          if (lg[i] > ecc) {
-            ecc = lg[i]
-          }
-        }
-        else {
-          ecc = Infinity
-        }
-      }
-
-    }
-  });
+  if (l < graph.order){
+    ecc = Infinity ;
+  };
 
   return ecc;
 }
-
