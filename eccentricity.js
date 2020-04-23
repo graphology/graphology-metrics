@@ -12,20 +12,21 @@ module.exports = function eccentricity(graph, mynode) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/eccentricity: given graph is not a valid graphology instance.');
 
-  var path = {}, ecc = -Infinity;
+  var ecc = -Infinity, lg = {};
 
   lg = singleSourceLength(graph, mynode);
-  var l = Object.keys(lg).length
+  var key = Object.keys(lg)
+  var l = key.length
 
-  for (var i = 1; i <= l; i++) {
-    if (lg[i] > ecc) {
-      ecc = lg[i];
+  for (key in lg) {
+    if (lg[key] > ecc) {
+      ecc = lg[key];
     };
-  };
+  }
 
   if (l < graph.order){
     ecc = Infinity ;
-  };
+  }
 
   return ecc;
 }
