@@ -1,32 +1,38 @@
 /**
  * Graphology Eccentricity
- * ===================
+ * ========================
  *
  * Functions used to compute the eccentricity of each node of a given graph.
  */
 var isGraph = require('graphology-utils/is-graph');
-var singleSourceLength = require('graphology-shortest-path/unweighted').singleSourceLength
-var Graph = require('graphology');
+var singleSourceLength = require('graphology-shortest-path/unweighted').singleSourceLength;
 
-module.exports = function eccentricity(graph, mynode) {
+module.exports = function eccentricity(graph, node) {
   if (!isGraph(graph))
     throw new Error('graphology-metrics/eccentricity: given graph is not a valid graphology instance.');
 
-  var ecc = -Infinity, lg = {};
+  if (graph.size === 0)
+    return Infinity;
 
-  lg = singleSourceLength(graph, mynode);
-  var key = Object.keys(lg)
-  var l = key.length
+  var ecc = -Infinity;
 
-  for (key in lg) {
-    if (lg[key] > ecc) {
-      ecc = lg[key];
-    };
+  var lengths = singleSourceLength(graph, node);
+
+  var otherNode;
+
+  var pathLength, l = 0;
+
+  for (otherNode in lengths) {
+    pathLength = lengths[otherNode];
+
+    if (pathLength > ecc)
+      ecc = pathLength;
+
+    l++;
   }
 
-  if (l < graph.order){
-    ecc = Infinity ;
-  }
+  if (l < graph.order)
+    return Infinity;
 
   return ecc;
-}
+};

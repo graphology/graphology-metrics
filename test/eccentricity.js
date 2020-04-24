@@ -4,6 +4,7 @@
  */
 var assert = require('chai').assert,
     Graph = require('graphology'),
+    emptyGraph = require('graphology-generators/classic/empty'),
     eccentricity = require('../eccentricity.js');
 
 function createGraph(type) {
@@ -36,12 +37,18 @@ function createGraph(type) {
 }
 
 describe('eccentricity', function() {
+  it('should return Infinity if the graph is empty.', function() {
+    var graph = emptyGraph(Graph, 6);
+    assert.strictEqual(eccentricity(graph, 3), Infinity);
+  });
+
   it('should calculate the eccentricity of the given node in an undirected graph.', function() {
     var result = eccentricity(createGraph('undirected'), 3);
-    assert.deepEqual(result, Infinity);
+    assert.strictEqual(result, Infinity);
   });
+
   it('should calculate the eccentricity of the given node in a directed graph.', function() {
     var result = eccentricity(createGraph('directed'), 3);
-    assert.deepEqual(result, 4);
+    assert.strictEqual(result, 4);
   });
 });
