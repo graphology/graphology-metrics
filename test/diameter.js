@@ -3,9 +3,9 @@
  * ==============================
  */
 var assert = require('chai').assert,
-    Graph = require('graphology'),
-    emptyGraph = require('graphology-generators/classic/empty'),
-    diameter = require('../diameter.js');
+  Graph = require('graphology'),
+  emptyGraph = require('graphology-generators/classic/empty'),
+  diameter = require('../diameter.js');
 
 function createGraph(type) {
   var graph = new Graph({type: type});
@@ -15,7 +15,6 @@ function createGraph(type) {
   graph.addNode('3');
   graph.addNode('4');
   graph.addNode('5');
-  graph.addNode('6');
 
   if (type === 'undirected') {
     graph.addUndirectedEdge(1, 2);
@@ -30,15 +29,16 @@ function createGraph(type) {
     graph.addDirectedEdge(3, 1);
     graph.addDirectedEdge(3, 5);
     graph.addDirectedEdge(2, 4);
-    graph.addDirectedEdge(4, 6);
   }
 
   return graph;
 }
 
 describe('eccentricity', function() {
-  it('should calculate the diameter of the given node in an undirected graph.', function() {
-    var result = diameter(createGraph('undirected'));
+  it('should calculate the diameter of the given node in an undirected graph with two connected component.', function() {
+    var graph = createGraph('undirected');
+    graph.addNode('6');
+    var result = diameter(graph);
     assert.strictEqual(result, Infinity);
   });
 
@@ -50,5 +50,10 @@ describe('eccentricity', function() {
   it('should return Infinity if the graph is empty.', function() {
     var graph = emptyGraph(Graph, 6);
     assert.strictEqual(diameter(graph), Infinity);
+  });
+
+  it('should calculate the diameter of the given node in an undirected graph.', function() {
+    var result = diameter(createGraph('undirected'));
+    assert.strictEqual(result, 3);
   });
 });
