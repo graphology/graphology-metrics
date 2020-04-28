@@ -6,7 +6,6 @@
  */
 var isGraph = require('graphology-utils/is-graph');
 var eccentricity = require('./eccentricity.js');
-var Graph = require('graphology');
 
 module.exports = function diameter(graph) {
   if (!isGraph(graph))
@@ -16,10 +15,10 @@ module.exports = function diameter(graph) {
     return Infinity;
 
   var diameter = -Infinity, ecc = 0;
-  var node;
+  var nodes = graph.nodes()
 
-  for (node of graph.nodes()) {
-    ecc = eccentricity(graph, node);
+  for (var i in nodes) {
+    ecc = eccentricity(graph, nodes[i]);
     if (ecc > diameter)
       diameter = ecc;
     if (diameter === Infinity)
