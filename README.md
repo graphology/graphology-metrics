@@ -22,10 +22,10 @@ npm install graphology-metrics
 
 *Node metrics*
 
-* [Degree](#degree)
 * [Centrality](#centrality)
   - [Betweenness centrality](#betweenness-centrality)
   - [Degree centrality](#degree-centrality)
+* [Degree](#degree)
 * [Eccentricity](#eccentricity)
 * [Weighted degree](#weighted-degree)
 
@@ -76,6 +76,30 @@ Or:
 
 * **order** *number*: number of nodes in the graph.
 * **size** *number*: number of edges in the graph.
+
+### Diameter
+
+Computes the diameter, i.e the maximum eccentricity of any node of the given graph.
+
+```js
+import {diameter} from 'graphology-metrics';
+// Alternatively, to load only the relevant code:
+import diameter from 'graphology-metrics/diameter';
+
+const graph = new Graph();
+graph.addNode('1');
+graph.addNode('2');
+graph.addNode('3');
+graph.addUndirectedEdge(1, 2);
+graph.addUndirectedEdge(2, 3);
+
+diameter(graph);
+>>> 2
+
+```
+*Arguments*
+
+* **graph** *Graph*: target graph.
 
 ### Extent
 
@@ -157,99 +181,6 @@ weightedSize(graph, 'myWeightAttribute');
 
 * **graph** *Graph*: target graph.
 * **weightAttribute** *?string* [`weight`]: name of the weight attribute.
-
-### Diameter
-
-Computes the diameter, i.e the maximum eccentricity of any node of the given graph.
-
-```js
-import {diameter} from 'graphology-metrics';
-// Alternatively, to load only the relevant code:
-import diameter from 'graphology-metrics/diameter';
-
-const graph = new Graph();
-graph.addNode('1');
-graph.addNode('2');
-graph.addNode('3');
-graph.addUndirectedEdge(1, 2);
-graph.addUndirectedEdge(2, 3);
-
-diameter(graph);
->>> 2
-
-```
-*Arguments*
-
-* **graph** *Graph*: target graph.
-
-### Degree
-
-Returns degree information for every node in the graph. Note that [`graphology`](https://graphology.github.io)'s API already gives you access to this information through `#.degree` etc. So only consider this function as a convenience to extract/assign all degrees at once.
-
-```js
-import degree from 'graphology-metrics/degree';
-
-import degree, {
-  inDegree,
-  outDegree,
-  undirectedDegree,
-  directedDegree,
-  allDegree
-} from 'graphology-metrics/degree';
-
-// To extract degree information for every node
-const degrees = degree(graph);
->>> {node1: 34, node2: 45, ...}
-
-// To extract only in degree information for every node
-const inDegrees = inDegree(graph);
-
-// To extract full degree breakdown for every node
-const degrees = allDegree(graph);
->>> { // Assuming the graph is directed
-  node1: {
-    inDegree: 2,
-    outDegree: 36
-  },
-  ...
-}
-
-// To map degree information to node attributes
-degree.assign(graph);
-graph.getNodeAttribute(node, 'degree');
->>> 45
-
-// To map only degree & in degree to node attributes
-allDegree.assign(graph, {types: ['degree', 'inDegree']});
-
-// To map only degree & in degree with different names
-allDegree(
-  graph,
-  {
-    attributes: {
-      inDegree: 'in',
-      outDegree: 'out'
-    },
-    types: ['inDegree', 'outDegree']
-  }
-)
->>> {
-  1: {in: 1, out: 1},
-  ...
-}
-```
-
-*Arguments*
-
-* **graph** *Graph*: target graph.
-* **options** *?object*: options:
-  - **attributes** *?object*: Custom attribute names:
-    + **degree** *?string*: Name of the mixed degree attribute.
-    + **inDegree** *?string*: Name of the mixed inDegree attribute.
-    + **outDegree** *?string*: Name of the mixed outDegree attribute.
-    + **undirectedDegree** *?string*: Name of the mixed undirectedDegree attribute.
-    + **directedDegree** *?string*: Name of the mixed directedDegree attribute.
-  - **types** *?array*: List of degree types to extract.
 
 ### Centrality
 
@@ -359,6 +290,75 @@ To compute the weighted degree of every node:
   - **weight** *?string* [`weight`]: name of the weight attribute.
   - **weightedDegree** *?string* [`weightedDegree`]: name of the attribute to assign.
 
+### Degree
+
+Returns degree information for every node in the graph. Note that [`graphology`](https://graphology.github.io)'s API already gives you access to this information through `#.degree` etc. So only consider this function as a convenience to extract/assign all degrees at once.
+
+```js
+import degree from 'graphology-metrics/degree';
+
+import degree, {
+  inDegree,
+  outDegree,
+  undirectedDegree,
+  directedDegree,
+  allDegree
+} from 'graphology-metrics/degree';
+
+// To extract degree information for every node
+const degrees = degree(graph);
+>>> {node1: 34, node2: 45, ...}
+
+// To extract only in degree information for every node
+const inDegrees = inDegree(graph);
+
+// To extract full degree breakdown for every node
+const degrees = allDegree(graph);
+>>> { // Assuming the graph is directed
+  node1: {
+    inDegree: 2,
+    outDegree: 36
+  },
+  ...
+}
+
+// To map degree information to node attributes
+degree.assign(graph);
+graph.getNodeAttribute(node, 'degree');
+>>> 45
+
+// To map only degree & in degree to node attributes
+allDegree.assign(graph, {types: ['degree', 'inDegree']});
+
+// To map only degree & in degree with different names
+allDegree(
+  graph,
+  {
+    attributes: {
+      inDegree: 'in',
+      outDegree: 'out'
+    },
+    types: ['inDegree', 'outDegree']
+  }
+)
+>>> {
+  1: {in: 1, out: 1},
+  ...
+}
+```
+
+*Arguments*
+
+* **graph** *Graph*: target graph.
+* **options** *?object*: options:
+  - **attributes** *?object*: Custom attribute names:
+    + **degree** *?string*: Name of the mixed degree attribute.
+    + **inDegree** *?string*: Name of the mixed inDegree attribute.
+    + **outDegree** *?string*: Name of the mixed outDegree attribute.
+    + **undirectedDegree** *?string*: Name of the mixed undirectedDegree attribute.
+    + **directedDegree** *?string*: Name of the mixed directedDegree attribute.
+  - **types** *?array*: List of degree types to extract.
+
 ### Eccentricity
 
 Computes the eccentricity which is the maximum of the shortest paths between the given node and any other node.
@@ -386,7 +386,6 @@ eccentricity(graph, 3)
 
 * **graph** *Graph*: target graph.
 * **node** *any*: desired node.
-
 
 ### Modalities
 
