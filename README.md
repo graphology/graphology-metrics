@@ -15,6 +15,7 @@ npm install graphology-metrics
 *Graph metrics*
 
 * [Density](#density)
+* [Diameter](#diameter)
 * [Extent](#extent)
 * [Modularity](#modularity)
 * [Weighted size](#weighted-size)
@@ -25,6 +26,7 @@ npm install graphology-metrics
 * [Centrality](#centrality)
   - [Betweenness centrality](#betweenness-centrality)
   - [Degree centrality](#degree-centrality)
+* [Eccentricity](#eccentricity)
 * [Weighted degree](#weighted-degree)
 
 *Attributes metrics*
@@ -155,6 +157,30 @@ weightedSize(graph, 'myWeightAttribute');
 
 * **graph** *Graph*: target graph.
 * **weightAttribute** *?string* [`weight`]: name of the weight attribute.
+
+### Diameter
+
+Computes the diameter, i.e the maximum eccentricity of any node of the given graph.
+
+```js
+import {diameter} from 'graphology-metrics';
+// Alternatively, to load only the relevant code:
+import diameter from 'graphology-metrics/diameter';
+
+const graph = new Graph();
+graph.addNode('1');
+graph.addNode('2');
+graph.addNode('3');
+graph.addUndirectedEdge(1, 2);
+graph.addUndirectedEdge(2, 3);
+
+diameter(graph);
+>>> 2
+
+```
+*Arguments*
+
+* **graph** *Graph*: target graph.
 
 ### Degree
 
@@ -332,6 +358,35 @@ To compute the weighted degree of every node:
 * **attributes** *?object*: custom attribute names:
   - **weight** *?string* [`weight`]: name of the weight attribute.
   - **weightedDegree** *?string* [`weightedDegree`]: name of the attribute to assign.
+
+### Eccentricity
+
+Computes the eccentricity which is the maximum of the shortest paths between the given node and any other node.
+
+```js
+import {eccentricity} from 'graphology-metrics';
+// Alternatively, to load only the relevant code:
+import eccentricity from 'graphology-metrics/eccentricity';
+
+graph.addNode('1');
+graph.addNode('2');
+graph.addNode('3');
+graph.addNode('4');
+graph.addUndirectedEdge(1, 2);
+graph.addUndirectedEdge(2, 3);
+graph.addUndirectedEdge(3, 1);
+graph.addUndirectedEdge(3, 4);
+
+eccentricity(graph, 3)
+>> 1
+
+
+```
+*Arguments*
+
+* **graph** *Graph*: target graph.
+* **node** *any*: desired node.
+
 
 ### Modalities
 
