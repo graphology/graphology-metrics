@@ -361,7 +361,7 @@ To compute the weighted degree of every node:
 
 ### Eccentricity
 
-Computes the eccentricity which is the greatest distance between the given node and any other node.
+Computes the eccentricity which is the maximum of the shortest paths between the given node and any other node.
 
 ```js
 import {eccentricity} from 'graphology-metrics';
