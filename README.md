@@ -15,10 +15,10 @@ npm install graphology-metrics
 *Graph metrics*
 
 * [Density](#density)
+* [Diameter](#diameter)
 * [Extent](#extent)
 * [Modularity](#modularity)
 * [Weighted size](#weighted-size)
-* [Diameter](#diameter)
 
 *Node metrics*
 
@@ -26,8 +26,8 @@ npm install graphology-metrics
 * [Centrality](#centrality)
   - [Betweenness centrality](#betweenness-centrality)
   - [Degree centrality](#degree-centrality)
-* [Weighted degree](#weighted-degree)
 * [Eccentricity](#eccentricity)
+* [Weighted degree](#weighted-degree)
 
 *Attributes metrics*
 
