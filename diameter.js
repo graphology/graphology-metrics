@@ -17,7 +17,7 @@ module.exports = function diameter(graph) {
   var diameter = -Infinity, ecc = 0;
   var nodes = graph.nodes()
 
-  for (var i = 0, l = graph.nodes().length; i < l ; i++) {
+  for (var i = 0, l = nodes.length; i < l ; i++) {
     ecc = eccentricity(graph, nodes[i]);
     if (ecc > diameter)
       diameter = ecc;
