@@ -22,6 +22,8 @@
     "betweenness",
     "centrality",
     "density",
+    "diameter",
+    "eccentricity",
     "extent",
     "graph",
     "graphology",
