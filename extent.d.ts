@@ -1,7 +1,7 @@
 import Graph from 'graphology-types';
 
-type Extent = [number, number];
-type ExtentMapping = {[key: string]: Extent};
+export type Extent = [number, number];
+export type ExtentMapping = {[key: string]: Extent};
 
 interface IExtent {
   (graph: Graph, attribute: string): Extent;

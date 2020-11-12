@@ -19,14 +19,9 @@ function nodeExtent(graph, attribute) {
 
   var attributes = [].concat(attribute);
 
-  var nodes = graph.nodes(),
-      node,
-      data,
-      value,
+  var value,
       key,
-      a,
-      i,
-      l;
+      a;
 
   var results = {};
 
@@ -36,10 +31,7 @@ function nodeExtent(graph, attribute) {
     results[key] = [Infinity, -Infinity];
   }
 
-  for (i = 0, l = nodes.length; i < l; i++) {
-    node = nodes[i];
-    data = graph.getNodeAttributes(node);
-
+  graph.forEachNode(function(node, data) {
     for (a = 0; a < attributes.length; a++) {
       key = attributes[a];
       value = data[key];
@@ -50,7 +42,7 @@ function nodeExtent(graph, attribute) {
       if (value > results[key][1])
         results[key][1] = value;
     }
-  }
+  });
 
   return typeof attribute === 'string' ? results[attribute] : results;
 }
@@ -68,14 +60,9 @@ function edgeExtent(graph, attribute) {
 
   var attributes = [].concat(attribute);
 
-  var edges = graph.edges(),
-      edge,
-      data,
-      value,
+  var value,
       key,
-      a,
-      i,
-      l;
+      a;
 
   var results = {};
 
@@ -85,10 +72,7 @@ function edgeExtent(graph, attribute) {
     results[key] = [Infinity, -Infinity];
   }
 
-  for (i = 0, l = edges.length; i < l; i++) {
-    edge = edges[i];
-    data = graph.getEdgeAttributes(edge);
-
+  graph.forEachEdge(function(edge, data) {
     for (a = 0; a < attributes.length; a++) {
       key = attributes[a];
       value = data[key];
@@ -99,7 +83,7 @@ function edgeExtent(graph, attribute) {
       if (value > results[key][1])
         results[key][1] = value;
     }
-  }
+  });
 
   return typeof attribute === 'string' ? results[attribute] : results;
 }
