@@ -3,12 +3,12 @@ import Graph from 'graphology-types';
 type CommunityMapping = {[key: string]: string | number};
 
 type ModularityOptions = {
-  attributes: {
-    community: string,
-    weight: string
+  attributes?: {
+    community?: string,
+    weight?: string
   },
-  communities: CommunityMapping,
-  weighted: boolean
+  communities?: CommunityMapping,
+  weighted?: boolean
 };
 
 interface IModularity {

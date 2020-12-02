@@ -3,12 +3,12 @@ import Graph from 'graphology-types';
 type BetweennessCentralityMapping = {[key: string]: number};
 
 type BetweennessCentralityOptions = {
-  attributes: {
-    centrality: string,
-    weight: string
+  attributes?: {
+    centrality?: string,
+    weight?: string
   },
-  normalized: boolean,
-  weighted: boolean
+  normalized?: boolean,
+  weighted?: boolean
 };
 
 interface IBetweennessCentrality {

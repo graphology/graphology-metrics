@@ -1,8 +1,8 @@
 import Graph from 'graphology-types';
 
 type DegreeCentralityOptions = {
-  attributes: {
-    centrality: string
+  attributes?: {
+    centrality?: string
   }
 };
 

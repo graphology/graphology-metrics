@@ -1,9 +1,9 @@
 import Graph, {NodeKey} from 'graphology-types';
 
 type WeightedDegreeOptions = {
-  attributes: {
-    weight: string,
-    weightedDegree: string
+  attributes?: {
+    weight?: string,
+    weightedDegree?: string
   }
 };
 
