@@ -135,9 +135,6 @@
  * doi:10.1109/TNSE.2015.2391998.
  * https://arxiv.org/abs/0812.1770
  *
- * [ToDo]:
- *  - Resolution limit.
- *
  * [Links]:
  * https://math.stackexchange.com/questions/2637469/where-does-the-second-formula-of-modularity-comes-from-in-the-louvain-paper-the
  * https://www.quora.com/How-is-the-formula-for-Louvain-modularity-change-derived
